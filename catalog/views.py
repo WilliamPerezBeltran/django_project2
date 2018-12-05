@@ -29,4 +29,13 @@ def products_subcategory(request, sub_category_id):
 	return render(request, 'catalog/products_subcategory.html', context=context)
 	# pdb.set_trace()
 
+def product_detalle(request, product_id):
+	product = Product.objects.get(pk=product_id)
+	context = {
+		'product': product,
+	}
+
+	return render(request, 'catalog/product_detalle.html', context=context)
+	# pdb.set_trace()
+
 

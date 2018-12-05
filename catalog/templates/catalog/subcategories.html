@@ -1,15 +1,22 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1> Categoria:{{category.name}}</h1>
-  <h3> subcategoria:</h3>
-  <ul>
-      {% for subcategory in category.subcategory_set.all %}
-        <li>
-            <strong>subcategory:</strong> 
-            <li><a href="{% url 'catalog:products_subcategory' subcategory.id %}">{{ subcategory.name }}</a></li>
 
-        </li>
-      {% endfor %}
-  </ul>
+<div class="container">
+  <div class="row pricing">
+    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 5%;">Subcategorias </h1>
+    <h3 style=" margin-bottom: 3%;">Categoria:  {{category.name}} </h3>
+    {% for subcategory in category.subcategory_set.all %}
+
+    <div class="col-md-3">
+      <div class="well">
+        <h3><b>{{ subcategory.name }}</b></h3>
+        <p><b>Productos:</b>  {{subcategory.product_set.all.count}} </p>
+        <hr>
+        <a href="{% url 'catalog:products_subcategory' subcategory.id %}" class="btn btn-primary btn-block">Ver Productos </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
 {% endblock %}

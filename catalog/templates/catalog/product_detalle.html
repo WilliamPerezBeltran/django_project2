@@ -1,0 +1,65 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+
+
+
+
+<div class="container">    
+<h1>producto detalle</h1>
+		<div class="row">
+			<div class="col-md-8">				
+				<div class="panel panel-default  panel--styled">
+					<div class="panel-body">
+						<div class="col-md-12 panelTop">	
+							<div class="col-md-4">	
+								<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
+							</div>
+							<div class="col-md-8">	
+								<h2>Detalle del producto</h2>
+								<p> <b>Nombre del producto:</b> {{product.name}}</p>
+								<p> <b>Fecha de fabricación:</b> {{product.date}}</p>
+								<p> <b>Fecha de vencimiento:</b> {{product.expiration_date}}</p>
+								<p> <b>Lote del producto:</b> {{product.lot}}</p>
+								<p> <b>Cantidad recibida:</b> {{product.units}}</p>
+								<p> <b>Categoria:</b> {{product.category}}</p>
+								<p> <b>Subcategoria:</b> {{product.sub_category}}</p>
+							</div>
+						</div>
+						
+						<div class="col-md-12 panelBottom">
+							<div class="col-md-4 text-center">
+								<button class="btn btn-lg btn-add-to-cart"><span class="glyphicon glyphicon-shopping-cart"></span>   Add to Cart</button>						
+							</div>
+							<div class="col-md-4 text-left">
+								<h5>Price <span class="itemPrice">$24.99</span></h5>
+							</div>
+							<div class="col-md-4">
+								<div class="stars">
+								 <div id="stars" class="starrr"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+  
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

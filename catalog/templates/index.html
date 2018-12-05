@@ -1,17 +1,120 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Local Library Home</h1>
-  <p>Welcome to LocalLibrary, a website developed by <em>Mozilla Developer Network</em>!</p>
-  <h2>Dynamic content</h2>
-  <p>The library has the following record counts:</p>
-  <ul>
-      {% for category in num_category %}
-        <li>
-            <strong>Category:</strong> 
-            <li><a href="{% url 'catalog:subcategories' category.id %}">{{ category.name }}</a></li>
+  
 
-        </li>
-      {% endfor %}
-  </ul>
-{% endblock %}
+
+
+<div class="container">
+  <div class="row pricing">
+    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 5%;">Categorias</h1>
+    {% for category in num_category %}
+
+    <div class="col-md-3">
+      <div class="well">
+        <h3><b>{{ category.name }}</b></h3>
+        <hr>
+        <p><b>Total subcategorias:</b>  {{category.subcategory_set.all.count}}</p>
+        <hr>
+        <p><b>Total productos:</b>  {{category.product_set.all.count}} </p>
+        <hr>
+        <p><b>€ 2,99 /PM</b></p>
+        <hr>
+        <a href="{% url 'catalog:subcategories' category.id %}" class="btn btn-primary btn-block">Ver subcategoria </a>
+      </div>
+    </div>
+    {% endfor %}
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+  <div class="container">
+    <div class="row pricing">
+      <div class="col-md-3">
+        <div class="well">
+          <h3><b>Plan 1</b></h3>
+          <hr>
+          <p>1 GB Datatransfer</p>
+          <hr>
+          <p>1 GB Storage</p>
+          <hr>
+          <p><b>€ 2,99 /PM</b></p>
+          <hr>
+          <a href="#" class="btn btn-default btn-block">Sign Up</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="well">
+          <h3><b>Plan 2</b></h3>
+          <hr>
+          <p>2 GB Datatransfer</p>
+          <hr>
+          <p>2 GB Storage</p>
+          <hr>
+          <p><b>€ 3,99 /PM</b></p>
+          <hr>
+          <a href="#" class="btn btn-primary btn-block">Sign Up</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="well">
+          <h3><b>Plan 3</b></h3>
+          <hr>
+          <p>3 GB Datatransfer</p>
+          <hr>
+          <p>3 GB Storage</p>
+          <hr>
+          <p><b>€ 4,99 /PM</b></p>
+          <hr>
+          <a href="#" class="btn btn-info btn-block">Sign Up</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="well">
+          <h3><b>Plan 4</b></h3>
+          <hr>
+          <p>4 GB Datatransfer</p>
+          <hr>
+          <p>4 GB Storage</p>
+          <hr>
+          <p><b>€ 5,99 /PM</b></p>
+          <hr>
+          <a href="#" class="btn btn-success btn-block">Sign Up</a>
+        </div>
+      </div>
+    </div>
+
+
+  -->
+
+
+
+
+
+
+
+
+
+
+
+
+  {% endblock %}
