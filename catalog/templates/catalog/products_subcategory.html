@@ -1,0 +1,17 @@
+
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>productos de la subcategoria</h1>
+  <h3> subcategoria: {{subcategory.name}}</h3>
+  <ul>
+      {% for product in subcategory.product_set.all %}
+        <li>
+            <strong>producto:</strong> 
+            <li><a href="">{{ product.name }}</a></li>
+
+        </li>
+      {% endfor %}
+  </ul>
+{% endblock %}

@@ -6,6 +6,8 @@ class Category(models.Model):
         max_length=200,
         help_text="Ingresa la categoría"
         )
+    def get_absolute_url(self):
+        return reverse('category-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.name

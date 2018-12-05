@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1> Categoria:{{category.name}}</h1>
+  <h3> subcategoria:</h3>
+  <ul>
+      {% for subcategory in category.subcategory_set.all %}
+        <li>
+            <strong>subcategory:</strong> 
+            <li><a href="{% url 'catalog:products_subcategory' subcategory.id %}">{{ subcategory.name }}</a></li>
+
+        </li>
+      {% endfor %}
+  </ul>
+{% endblock %}
