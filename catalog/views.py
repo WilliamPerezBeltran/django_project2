@@ -3,6 +3,7 @@ from catalog.models import Category, SubCategory, Product
 import pdb
 def index(request):
     num_category = Category.objects.all()
+    pdb.set_trace()
     
     context = {
         'num_category': num_category,
