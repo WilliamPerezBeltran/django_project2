@@ -1,7 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  
+
+
+   {% for product in num_products %}
+   <ul>
+     <li>{{product.name }}----{{product.alert}}</li>
+   </ul>
+   {% endfor %}
+
 
 
 

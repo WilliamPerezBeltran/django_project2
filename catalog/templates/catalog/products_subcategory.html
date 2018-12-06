@@ -30,6 +30,7 @@
                         <th>Producto</th>
                         <th>Categoria</th>
                         <th>Subcategoria</th>
+                        <th>alerta</th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
                   </thead>
@@ -41,6 +42,7 @@
                         <td>{{ product.name }}</td>
                         <td>{{ product.category }}</td>
                         <td>{{ subcategory.name}}</td>
+                        <td>{{ subcategory.alert}}</td>
                         <td align="center">
                           <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
                           <a class="btn btn-default"><em class="fa fa-pencil"></em></a>

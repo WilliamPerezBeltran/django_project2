@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from catalog.models import Category, SubCategory, Product
+from catalog.models import Category, SubCategory, Product, Alert
 
 # admin.site.register(Category)
 # admin.site.register(SubCategory)
 # admin.site.register(Product)
+admin.site.register(Alert)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

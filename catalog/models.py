@@ -29,9 +29,16 @@ class Product(models.Model):
     units = models.PositiveIntegerField(help_text="Cantidad recibida")
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     sub_category = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True)
-
+    alert = models.OneToOneField('Alert',on_delete=models.SET_NULL, null=True)
     def get_absolute_url(self):
         return reverse('product-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.name
+
+
+class Alert(models.Model):
+    name = models.CharField(max_length=200, help_text="Ingrese el color del alert")
 
     def __str__(self):
         return self.name
