@@ -3,12 +3,30 @@
 {% block content %}
 
 
-   {% for product in num_products %}
-   <ul>
-     <li>{{product.name }}----{{product.alert}}</li>
-   </ul>
-   {% endfor %}
+ 
+<table class="table table-striped table-bordered table-list">
+    <thead>
+      <tr>
+          <th>Producto</th>
+          <th>expiration_date</th>
+          <th>current_date</th>
+          <th>alerta</th>
+          <th><em class="fa fa-cog"></em></th>
+      </tr> 
+    </thead>
+    <tbody>
 
+      {% for product in num_products %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.expiration_date }}</td>
+          <td>{{ current_date }}</td>
+          <td>{{ product.alert }}</td>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 
 

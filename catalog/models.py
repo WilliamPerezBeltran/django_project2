@@ -1,5 +1,9 @@
 from django.db import models
 from django.urls import reverse  
+# from datetime import timedelta
+import datetime
+from datetime import timedelta
+import pdb
 
 class Category(models.Model):
     name = models.CharField(
@@ -29,16 +33,26 @@ class Product(models.Model):
     units = models.PositiveIntegerField(help_text="Cantidad recibida")
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     sub_category = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True)
-    alert = models.OneToOneField('Alert',on_delete=models.SET_NULL, null=True)
+
     def get_absolute_url(self):
         return reverse('product-detail', args=[str(self.id)])
 
-    def __str__(self):
-        return self.name
 
+    @property
+    def alert(self):
+        expiration_red = self.expiration_date - timedelta(days=30)
+        expiration_yellow = self.expiration_date - timedelta(days=60)
+        current_date = datetime.datetime.now().date()
 
-class Alert(models.Model):
-    name = models.CharField(max_length=200, help_text="Ingrese el color del alert")
+        if current_date >= self.expiration_date:
+            return 'El producto expiró el {0}'.format(self.expiration_date)
+        else:
+            if current_date >= expiration_yellow and current_date <= expiration_red:
+                return 'alerta_amarilla' 
+            elif current_date >= expiration_red and current_date <= self.expiration_date:
+                return 'alerta_roja' 
+            else:
+                return 'Falta tiempo para la expiración' 
 
     def __str__(self):
         return self.name
