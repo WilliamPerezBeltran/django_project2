@@ -4,7 +4,6 @@
 
 <div class="container">
     <div class="row">
-    
     <p></p>
     <h1>Productos de la subcategoria {{subcategory.name}}</h1>
     <h3>Categoria: <b>{{subcategory.category}}</b></h3>
@@ -50,8 +49,6 @@
                           {% else %}
                             <td>!Producto vencido!</td>
                         {% endif %}
-
-
                         <td align="center">
                           <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
                           <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
@@ -87,21 +84,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 {% endblock %}

@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse  
-# from datetime import timedelta
 import datetime
 from datetime import timedelta
 import pdb
@@ -16,7 +15,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 class SubCategory(models.Model):
     name = models.CharField(max_length=200, help_text="Ingresa la sub-categoría")
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
@@ -24,9 +22,7 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.name
 
-
 class Product(models.Model):
-
     RED_ALERT    = 'red_alert'
     YELLOW_ALERT = 'yellow_alert'
     EXPIRED_PRODUCT = 'vencido'
@@ -59,9 +55,6 @@ class Product(models.Model):
     @classmethod
     def expired(self):
         return self.objects.filter(expiration_date__lte=datetime.date.today())
-
-    
-
 
     def __str__(self):
         return self.name

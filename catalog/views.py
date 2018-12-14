@@ -3,8 +3,6 @@ from catalog.models import Category, SubCategory, Product
 import pdb
 import datetime
 from datetime import timedelta
-# from catalog.models import RED_ALERT, YELLOW_ALERT, EXPIRED_PRODUCT
-
 
 def index(request):
 	num_category = Category.objects.all()
@@ -12,7 +10,6 @@ def index(request):
 	now = datetime.datetime.now()
 	num_products = Product.objects.all()
 	current_date = str(datetime.datetime.now().date())
-	
 	num_products_red_alert = {}
 	num_products_yellow_alert = {}
 	num_expired_products = {}
@@ -36,17 +33,9 @@ def index(request):
 				else:
 					contador_expired_products += 1
 
-				
-
 		num_products_red_alert[category.id] = contador_products_red_alert
 		num_products_yellow_alert[category.id] = contador_products_yellow_alert
 		num_expired_products[category.id] = contador_expired_products
-
-
-
-				
-			
-
 	
 	# Lógica para encontrar el total de productos que tiene una categoria 
 	num_products_by_category={}
@@ -58,11 +47,6 @@ def index(request):
 			subcategory_products_num += subcategory.product_set.count()
 
 		num_products_by_category[category.id] = subcategory_products_num
-
-			
-
-	
-
 	
 	context = {
 		'num_products_red_alert': num_products_red_alert,
@@ -83,7 +67,6 @@ def subcategories(request, category_id):
 	}
 
 	return render(request, 'catalog/subcategories.html', context=context)
-	# pdb.set_trace()
 
 
 def products_subcategory(request, sub_category_id):
@@ -93,7 +76,6 @@ def products_subcategory(request, sub_category_id):
 	}
 
 	return render(request, 'catalog/products_subcategory.html', context=context)
-	# pdb.set_trace()
 
 def product_detalle(request, product_id):
 	product = Product.objects.get(pk=product_id)
@@ -102,8 +84,6 @@ def product_detalle(request, product_id):
 	}
 
 	return render(request, 'catalog/product_detalle.html', context=context)
-	# pdb.set_trace()
-
 
 def products(request):
 	num_products = Product.objects.all()
@@ -112,6 +92,5 @@ def products(request):
 	}
 
 	return render(request, 'catalog/products.html', context=context)
-	# pdb.set_trace()
 
 

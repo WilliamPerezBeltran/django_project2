@@ -2,15 +2,8 @@
 
 {% block content %}
 
-
-
-
-
-
-
 <div class="container">
     <div class="row">
-    
     <p></p>
         <!-- <div class="col-md-10 col-md-offset-1"> -->
         <div class="col-md-10">
@@ -59,8 +52,6 @@
                           {% else %}
                             <td>Producto vencido</td>
                         {% endif %}
-
-
                         <td align="center">
                           <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
                           <!-- <a class="btn btn-default"><em class="fa fa-pencil"></em></a> -->
@@ -97,34 +88,4 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  {% endblock %}
+{% endblock %}

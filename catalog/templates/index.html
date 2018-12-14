@@ -2,11 +2,6 @@
 
 {% block content %}
 
-
-
-
-
-
 <div class="container">
   <div class="row pricing">
     <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;">Categorias</h1>
@@ -31,11 +26,7 @@
         {% endfor %}
         
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-        
-
-
         <p>
-          
           {% for category_id, num_total_red_alert in num_products_red_alert.items %}
               {% if category_id == category.id%}
                <p>
@@ -45,7 +36,6 @@
             {% endfor %}
         </p>
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-
         {% for category_id, total_red_yellow_by_category in num_products_yellow_alert.items %}
           {% if category_id == category.id %}
            <p>
@@ -54,10 +44,8 @@
           {% endif%}
         {% endfor %}
         <p>
-          
         </p>
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-
         {% for category_id, total_expired_products_by_category in num_expired_products.items %}
           {% if category_id == category.id %}
            <p>
@@ -65,109 +53,11 @@
            </p>
           {% endif%}
         {% endfor %}
-          
-
-
-
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-
-
-
           <a href="{% url 'catalog:subcategories' category.id %}" class="btn btn-primary btn">Ver subcategoria </a>
         </div>
       </div>
       {% endfor %}
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-  <div class="container">
-    <div class="row pricing">
-      <div class="col-md-3">
-        <div class="well">
-          <h3><b>Plan 1</b></h3>
-          <hr>
-          <p>1 GB Datatransfer</p>
-          <hr>
-          <p>1 GB Storage</p>
-          <hr>
-          <p><b>€ 1,99 /PM</b></p>
-          <hr>
-          <a href="#" class="btn btn-default btn-block">Sign Up</a>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="well">
-          <h3><b>Plan 1</b></h3>
-          <hr>
-          <p>1 GB Datatransfer</p>
-          <hr>
-          <p>1 GB Storage</p>
-          <hr>
-          <p><b>€ 3,99 /PM</b></p>
-          <hr>
-          <a href="#" class="btn btn-primary btn-block">Sign Up</a>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="well">
-          <h3><b>Plan 3</b></h3>
-          <hr>
-          <p>3 GB Datatransfer</p>
-          <hr>
-          <p>3 GB Storage</p>
-          <hr>
-          <p><b>€ 4,99 /PM</b></p>
-          <hr>
-          <a href="#" class="btn btn-info btn-block">Sign Up</a>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="well">
-          <h3><b>Plan 4</b></h3>
-          <hr>
-          <p>4 GB Datatransfer</p>
-          <hr>
-          <p>4 GB Storage</p>
-          <hr>
-          <p><b>€ 1,99 /PM</b></p>
-          <hr>
-          <a href="#" class="btn btn-success btn-block">Sign Up</a>
-        </div>
-      </div>
-    </div>
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
 
   {% endblock %}
