@@ -2,12 +2,16 @@
 
 {% block content %}
 
+
+
+
+
+
+
 <div class="container">
     <div class="row">
     
     <p></p>
-    <h1>Productos de la subcategoria {{subcategory.name}}</h1>
-    <h3>Categoria: <b>{{subcategory.category}}</b></h3>
         <!-- <div class="col-md-10 col-md-offset-1"> -->
         <div class="col-md-10">
 
@@ -30,32 +34,37 @@
                         <th>Producto</th>
                         <th>Categoria</th>
                         <th>Subcategoria</th>
-                        <th>alerta</th>
+                        <th>Vencimiento</th>
+                        <th>Lote</th>
+                        <th>Unidades</th>
+                        <th>Alerta</th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
                   </thead>
                   <tbody>
 
-                    {% for product in subcategory.product_set.all %}
+                    {% for product in num_products %}
                       <tr>
                         <td class="hidden-xs">{{ product.id }}</td>
                         <td>{{ product.name }}</td>
                         <td>{{ product.category }}</td>
-                        <td>{{ subcategory.name}}</td>
-                        <!-- <td>{{ product.alert}}</td> -->
+                        <td>{{ product.sub_category}}</td>
+                        <td>{{ product.expiration_date}}</td>
+                        <td>{{ product.lot}}</td>
+                        <td>{{ product.units}}</td>
                         {% if product.alert == "red_alert" %}
-                            <td>!Alerta roja!</td>
+                            <td>Alerta roja</td>
                           {% elif product.alert == "yellow_alert" %}
-                            <td>!Alerta amarilla!</td>
+                            <td>Alerta amarilla</td>
                           {% else %}
-                            <td>!Producto vencido!</td>
+                            <td>Producto vencido</td>
                         {% endif %}
 
 
                         <td align="center">
                           <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
-                          <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
-                          <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+                          <!-- <a class="btn btn-default"><em class="fa fa-pencil"></em></a> -->
+                          <!-- <a class="btn btn-danger"><em class="fa fa-trash"></em></a> -->
                         </td>
                       </tr>
                     {% endfor %}
@@ -104,4 +113,18 @@
 
 
 
-{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {% endblock %}

@@ -26,6 +26,11 @@ class SubCategory(models.Model):
 
 
 class Product(models.Model):
+
+    RED_ALERT    = 'red_alert'
+    YELLOW_ALERT = 'yellow_alert'
+    EXPIRED_PRODUCT = 'vencido'
+
     name = models.CharField(max_length=200, help_text="Nombre del producto")
     date = models.DateField(max_length=256, help_text="Fecha de fabricación")
     expiration_date = models.DateField(max_length=256, help_text="Fecha de vencimiento")
@@ -37,22 +42,26 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product-detail', args=[str(self.id)])
 
-
     @property
     def alert(self):
         expiration_red = self.expiration_date - timedelta(days=30)
         expiration_yellow = self.expiration_date - timedelta(days=60)
         current_date = datetime.datetime.now().date()
+        vencido = "vencido"
 
         if current_date >= self.expiration_date:
-            return 'El producto expiró el {0}'.format(self.expiration_date)
-        else:
-            if current_date >= expiration_yellow and current_date <= expiration_red:
-                return 'alerta_amarilla' 
-            elif current_date >= expiration_red and current_date <= self.expiration_date:
-                return 'alerta_roja' 
-            else:
-                return 'Falta tiempo para la expiración' 
+            return self.EXPIRED_PRODUCT 
+        elif current_date >= expiration_red:
+            return self.RED_ALERT
+        elif current_date >= expiration_yellow:
+            return self.YELLOW_ALERT
+
+    @classmethod
+    def expired(self):
+        return self.objects.filter(expiration_date__lte=datetime.date.today())
+
+    
+
 
     def __str__(self):
         return self.name
