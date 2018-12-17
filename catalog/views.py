@@ -4,6 +4,8 @@ import pdb
 import datetime
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 
@@ -76,7 +78,19 @@ def subcategories(request, category_id):
 @login_required
 def products_subcategory(request, sub_category_id):
 	subcategory = SubCategory.objects.get(pk=sub_category_id)
+	subcategory_all_products=subcategory.product_set.all()
+	page = request.GET.get(	'page', 1)
+
+	paginator = Paginator(subcategory_all_products, 8)
+	try:
+		subcategory_all_products = paginator.page(page)
+	except PageNotAnInteger:
+		subcategory_all_products = paginator.page(1)
+	except EmptyPage:
+		subcategory_all_products = paginator.page(paginator.num_pages)
+
 	context = {
+		'subcategory_all_products': subcategory_all_products,
 		'subcategory': subcategory,
 	}
 
@@ -94,6 +108,16 @@ def product_detalle(request, product_id):
 @login_required
 def products(request):
 	num_products = Product.objects.all()
+	page = request.GET.get(	'page', 1)
+
+	paginator = Paginator(num_products, 8)
+	try:
+		num_products = paginator.page(page)
+	except PageNotAnInteger:
+		num_products = paginator.page(1)
+	except EmptyPage:
+		num_products = paginator.page(paginator.num_pages)
+
 	context = {
 		'num_products': num_products,
 	}
