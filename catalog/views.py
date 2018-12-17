@@ -3,7 +3,11 @@ from catalog.models import Category, SubCategory, Product
 import pdb
 import datetime
 from datetime import timedelta
+from django.contrib.auth.decorators import login_required
 
+
+
+@login_required
 def index(request):
 	num_category = Category.objects.all()
 
@@ -60,6 +64,7 @@ def index(request):
 
 	return render(request, 'index.html', context=context)
 
+@login_required
 def subcategories(request, category_id):
 	category = Category.objects.get(pk=category_id)
 	context = {
@@ -68,7 +73,7 @@ def subcategories(request, category_id):
 
 	return render(request, 'catalog/subcategories.html', context=context)
 
-
+@login_required
 def products_subcategory(request, sub_category_id):
 	subcategory = SubCategory.objects.get(pk=sub_category_id)
 	context = {
@@ -77,6 +82,7 @@ def products_subcategory(request, sub_category_id):
 
 	return render(request, 'catalog/products_subcategory.html', context=context)
 
+@login_required
 def product_detalle(request, product_id):
 	product = Product.objects.get(pk=product_id)
 	context = {
@@ -85,6 +91,7 @@ def product_detalle(request, product_id):
 
 	return render(request, 'catalog/product_detalle.html', context=context)
 
+@login_required
 def products(request):
 	num_products = Product.objects.all()
 	context = {

@@ -8,8 +8,8 @@
     {% for category in num_category %}
 
     <div class="col-md-3">
-      <div class="well">
-        <h3><b>{{ category.name }}</b></h3>
+      <div class="well" style="padding-top: 0 !important;padding-bottom: 5px !important">
+        <h3 style="margin-top: 4px;"><b>{{ category.name }}</b></h3>
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
         <p>
           <b>Total subcategorias:</b>  {{category.subcategory_set.all.count}}

@@ -13,55 +13,43 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-  <div  class="container-fluid">
+<body style="background: #F0F0F0">
+  
+  <!-- <div   class="container-fluid"> -->
     <div class="row">
-      <div style="background: #F5F5F5;height: 100vh;" class="col-sm-2">
-        {% block sidebar %}
-        <!-- <ul class="sidebar-nav">
-          <li><a href="{% url 'catalog:index' %}">Productos</a></li>
-          <li><a href="">All books</a></li>
-          <li><a href="">All authors</a></li>
-        </ul>
- -->
-        <nav class="navbar navbar-default sidebar" role="navigation">
+  {% block sidebar %}
+
+    {% if user.is_authenticated %}
+      <!-- <div style="background: #F5F5F5;height: 100vh;" class="col-sm-2"> -->
+      <div class="col-sm-2">
+        <nav style="height: 100vh;" class="navbar navbar-default sidebar" role="navigation">
           <!-- <div class="container-fluid"> -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>      
-            </div>
+            
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
               <ul class="nav navbar-nav">
+                 <li><a>User: {{ user.get_username }}</a></li>   
                 <li class="active"><a href="{% url 'catalog:index' %}">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                 <li ><a href="{% url 'catalog:products' %}">Productos<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
+                {% if user.is_authenticated %}
+                   <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
 
-               <!--  <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
-                  <ul class="dropdown-menu forAnimate" role="menu">
-                    <li><a href="">Crear</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#">Reportar</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Informes</a></li>
-                  </ul>
-                </li>    -->      
-
-                <!-- <li ><a href="#">Libros<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li> -->    
-
-
-                <!-- <li ><a href="#">Tags<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li> -->
-
+                 {% else %}
+                   <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
+                 {% endif %} 
                 
               </ul>
             </div>
           <!-- </div> -->
         </nav>
+      </div>
+    {% endif  %}
+
+  {% endblock %}
+  <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+</div>
+<!-- </div> -->
+</body>
+</html>
 <style>
 body,html{
     height: 100%;
@@ -187,24 +175,3 @@ body,html{
 </style>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        {% endblock %}
-      </div>
-      <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
-    </div>
-  </div>
-</body>
-</html>
