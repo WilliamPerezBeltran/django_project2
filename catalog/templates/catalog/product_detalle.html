@@ -2,120 +2,76 @@
 
 {% block content %}
 
-<div class="container">    
-<h1>producto detalle</h1>
-		<div class="row">
-			<div class="col-md-8">				
-				<div class="panel panel-default  panel--styled">
-					<div class="panel-body">
-						<div class="col-md-12 panelTop">	
-							<div class="col-md-4">	
-								<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
-							</div>
-							<div class="col-md-8">	
-								<h2>Detalle del producto</h2>
-								<p> <b>Nombre del producto:</b> {{product.name}}</p>
-								<p> <b>Fecha de fabricación:</b> {{product.date}}</p>
-								<p> <b>Fecha de vencimiento:</b> {{product.expiration_date}}</p>
-								<p> <b>Lote del producto:</b> {{product.lot}}</p>
-								<p> <b>Cantidad recibida:</b> {{product.units}}</p>
-								<p> <b>Categoria:</b> {{product.category}}</p>
-								<p> <b>Subcategoria:</b> {{product.sub_category}}</p>
-								<p> 
-									<b>Alerta:</b> 
-									{% if product.alert == "red_alert" %}
-			                            Alerta roja
-			                          {% elif product.alert == "yellow_alert" %}
-			                            Alerta amarilla
-			                          {% else %}
-			                            Producto vencido
-			                        {% endif %}
-								</p>
-							</div>
+<div class="container" >    
+	<div class="row" style=" display: flex;justify-content: center;align-items: center;">
+		<div class="col-sm-8" >				
+			<div style="" class="panel panel-default  panel--styled">
+				<div class="panel-body">
+					<h4>Detalle del producto</h4>
+					<div class="col-md-12 panelTop">	
+						<div class="col-md-4">	
+							<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
 						</div>
-						
-						<div class="col-md-12 panelBottom">
-							<div class="col-md-4 text-center">
-								<!-- <button class="btn btn-lg btn-add-to-cart"><span class="glyphicon glyphicon-shopping-cart"></span>   Add to Cart</button> -->	
-								<a href="{% url 'catalog:products_subcategory' product.sub_category.id %}">
-									<button class="btn btn-primary btn-lg btn-add-to-cart"></span> Volver a la subcategoría</button>
-								</a>
-														
-							</div>
-							<div class="col-md-4 text-left">
-								<h5><span class="itemPrice"></span></h5>
-							</div>
-							<div class="col-md-4">
-								<div class="stars">
-								 <div id="stars" class="starrr"></div>
-								</div>
-							</div>
+						<div class="col-md-8">	
+							<p> <b>Nombre del producto:</b> {{product.name}}</p>
+							<p> <b>Fecha de fabricación:</b> {{product.date}}</p>
+							<p> <b>Fecha de vencimiento:</b> {{product.expiration_date}}</p>
+							<p> <b>Lote del producto:</b> {{product.lot}}</p>
+							<p> <b>Cantidad recibida:</b> {{product.units}}</p>
+							<p> <b>Categoria:</b> {{product.category}}</p>
+							<p> <b>Subcategoria:</b> {{product.sub_category}}</p>
+							<p> 
+								<b>Alerta:</b> 
+								{% if product.alert == "red_alert" %}
+								Alerta roja
+								{% elif product.alert == "yellow_alert" %}
+								Alerta amarilla
+								{% else %}
+								Producto vencido
+								{% endif %}
+							</p>
 						</div>
+					</div>
+
+					<div class="col-md-12 panelBottom" >
+						<div class="col-md-4" >
+
+							<a href="{% url 'catalog:products_subcategory' product.sub_category.id %}">
+								<button class="btn btn-primary btn-lg btn-add-to-cart"></span> Volver a la subcategoría del producto</button>
+							</a>
+
+						</div>
+
+
 					</div>
 				</div>
 			</div>
 		</div>
-    </div>
-  
+	</div>
+</div>
+
 <style>
-	
-/*----------------------
-Product Card Styles 
-----------------------*/
+
+.panel-body h4{
+	margin-left: 8%;
+}
+
+.panel-body {
+	background: #F5F5F5;
+}
+
 .panel.panel--styled {
-    background: #F4F2F3;
+	background: #F4F2F3;
+	width: 80%;
+	margin-top: 10%
 }
 .panelTop {
-    padding: 30px;
+	padding: 30px;
 }
 
 .panelBottom {
-    border-top: 1px solid #e7e7e7;
-    padding-top: 20px;
-}
-.btn-add-to-cart {
-    background: #FD5A5B;
-    color: #fff;
-}
-.btn.btn-add-to-cart.focus, .btn.btn-add-to-cart:focus, .btn.btn-add-to-cart:hover  {
-	color: #fff;   
-    background: #FD7172;
-	outline: none;
-}
-.btn-add-to-cart:active {
-	background: #F9494B;
-	outline: none;
-}
-
-
-span.itemPrice {
-    font-size: 24px;
-    color: #FA5B58;
-}
-
-/*----------------------
-##star Rating Styles 
-----------------------*/
-.stars {
-    padding-top: 10px;
-	width: 100%;
-	display: inline-block;
-}
-span.glyphicon {
-    padding: 5px;
-}
-.glyphicon-star-empty {
-    color: #9d9d9d;
-}
-.glyphicon-star-empty, .glyphicon-star { 
-    font-size: 18px;
-}
-.glyphicon-star {
-    color: #FD4;
-    transition: all .25s;
-}   
-.glyphicon-star:hover { 
-    transform: rotate(-15deg) scale(1.3); 
+	border-top: 1px solid #e7e7e7;
+	padding-top: 20px;
 }
 
 </style>
