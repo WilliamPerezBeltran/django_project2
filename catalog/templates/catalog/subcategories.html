@@ -8,14 +8,39 @@
     <h3 style=" margin-bottom: 3%;margin-left: 1.5%;">Categoria:  {{category.name}} </h3>
     {% for subcategory in category.subcategory_set.all %}
 
-    <div class="col-md-3">
-      <div class="well">
-        <h3><b>{{ subcategory.name }}</b></h3>
-        <p><b>Productos:</b>  {{subcategory.product_set.all.count}} </p>
-        <hr>
-        <a href="{% url 'catalog:products_subcategory' subcategory.id %}" class="btn btn-primary btn-block">Ver Productos </a>
-      </div>
-    </div>
+        <div class="col-md-3">
+          <div class="well">
+            <h3><b>{{ subcategory.name }}</b></h3>
+            <p><b>Productos:</b>  {{subcategory.product_set.all.count}} </p>
+            <hr>
+            <a href="{% url 'catalog:products_subcategory' subcategory.id %}" class="btn btn-primary btn-block">Ver Productos </a>
+            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            {% for subcategori_id, num_products_red_alert in num_products_red_alert.items %}
+              {% if subcategory.id == subcategori_id %}
+                <p>
+                  <b style="color:red">Alertas rojas:</b> {{num_products_red_alert}}
+                </p>
+              {% endif %}
+            {% endfor %}
+            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            {% for subcategori_id, num_products_yellow_alert in num_products_yellow_alert.items %}
+              {% if subcategory.id == subcategori_id %}
+                <p>
+                   <b style="color: #FFA100">Alertas amarillas:</b> {{num_products_yellow_alert}}
+                </p>
+              {% endif %}
+            {% endfor %}
+            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            {% for subcategori_id, num_products_expired_products in num_expired_products.items %}
+              {% if subcategory.id == subcategori_id %}
+                <p>
+                   <b>Productos vencidos:</b>  {{num_products_expired_products}}
+                </p>
+              {% endif %}
+            {% endfor %}
+            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+          </div>
+        </div>
     {% endfor %}
   </div>
   

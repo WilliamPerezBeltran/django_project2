@@ -15,7 +15,7 @@
         
       </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="height: 80vh !important;">
       <table class="table table-striped table-bordered table-list">
         <thead>
           <tr>
@@ -30,18 +30,29 @@
         <tbody>
 
           {% for product in subcategory_all_products %}
-          <tr>
+          <tr class="">
             <td class="hidden-xs">{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.category }}</td>
             <td>{{ subcategory.name}}</td>
             <!-- <td>{{ product.alert}}</td> -->
             {% if product.alert == "red_alert" %}
-            <td>!Alerta roja!</td>
+            <td style="color: red">
+              !Alerta roja!
+              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
+            </td>
+
             {% elif product.alert == "yellow_alert" %}
-            <td>!Alerta amarilla!</td>
+              <td>
+                !Alerta amarilla!
+                <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
+              </td>
+              
             {% else %}
-            <td>!Producto vencido!</td>
+            <td>
+              !Producto vencido!
+               <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
+            </td>
             {% endif %}
             <td align="center">
               <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
@@ -52,25 +63,13 @@
           {% endfor %}
         </tbody>
       </table>
-
-
-
-
-
-
-
-
-
       
     </div>
     <div class="panel-footer">
       <div class="row">
-        <div class="col col-xs-4">Page 1 of 
+        <div class="col col-xs-4">{{subcategory_all_products}}
         </div>
         <div class="col col-xs-8">
-
-
-
 
           {% if subcategory_all_products.has_other_pages %}
           <ul class="pagination hidden-xs pull-right">
@@ -79,6 +78,7 @@
             {% else %}
             <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
+
             {% for i in subcategory_all_products.paginator.page_range %}
             {% if subcategory_all_products.number == i %}
             <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
@@ -98,7 +98,12 @@
       </div>
     </div>
   </div>
-
 </div>
+
+<style>
+  .panel-footer {
+     padding: 0px 15px !important; 
+}
+</style>
 
 {% endblock %}

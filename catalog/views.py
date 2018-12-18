@@ -6,9 +6,6 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-
-
 @login_required
 def index(request):
 	num_category = Category.objects.all()
@@ -69,7 +66,31 @@ def index(request):
 @login_required
 def subcategories(request, category_id):
 	category = Category.objects.get(pk=category_id)
+	num_products_red_alert = {}
+	num_products_yellow_alert = {}
+	num_expired_products = {}
+
+	for subcategory in category.subcategory_set.all():
+		contador_products_red_alert = 0
+		contador_products_yellow_alert = 0
+		contador_expired_products = 0
+
+		for product in subcategory.product_set.all():
+			if product.alert == product.RED_ALERT:
+				contador_products_red_alert += 1
+			elif product.alert == product.YELLOW_ALERT:
+				contador_products_yellow_alert += 1
+			else:
+				contador_expired_products += 1
+
+		num_products_red_alert[subcategory.id] =  contador_products_red_alert
+		num_products_yellow_alert[subcategory.id] =  contador_products_yellow_alert
+		num_expired_products[subcategory.id] =  contador_expired_products
+
 	context = {
+		'num_products_red_alert': num_products_red_alert,
+		'num_products_yellow_alert': num_products_yellow_alert,
+		'num_expired_products': num_expired_products,
 		'category': category,
 	}
 
@@ -90,6 +111,7 @@ def products_subcategory(request, sub_category_id):
 		subcategory_all_products = paginator.page(paginator.num_pages)
 
 	context = {
+		'page': page,
 		'subcategory_all_products': subcategory_all_products,
 		'subcategory': subcategory,
 	}
@@ -110,7 +132,7 @@ def products(request):
 	num_products = Product.objects.all()
 	page = request.GET.get(	'page', 1)
 
-	paginator = Paginator(num_products, 8)
+	paginator = Paginator(num_products, 9)
 	try:
 		num_products = paginator.page(page)
 	except PageNotAnInteger:
@@ -119,6 +141,7 @@ def products(request):
 		num_products = paginator.page(paginator.num_pages)
 
 	context = {
+		'page': page,
 		'num_products': num_products,
 	}
 

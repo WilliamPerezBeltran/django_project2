@@ -15,13 +15,11 @@
           <b>Total subcategorias:</b>  {{category.subcategory_set.all.count}}
         </p>
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-
         {% for category_id, products_by_category in num_products_by_category.items %}
             {% if category_id == category.id %}
-            <p>
-              <b>Total productos:</b>  {{ products_by_category }} 
-            </p>
-
+              <p>
+                <b>Total productos:</b>  {{ products_by_category }} 
+              </p>
             {% endif %}
         {% endfor %}
         
@@ -29,9 +27,9 @@
         <p>
           {% for category_id, num_total_red_alert in num_products_red_alert.items %}
               {% if category_id == category.id%}
-               <p>
-                  <b style="color:red">Alertas rojas:</b> {{num_total_red_alert}}
-               </p>
+                 <p>
+                    <b style="color:red">Alertas rojas:</b> {{num_total_red_alert}}
+                 </p>
               {% endif%}
             {% endfor %}
         </p>
@@ -39,17 +37,15 @@
         {% for category_id, total_red_yellow_by_category in num_products_yellow_alert.items %}
           {% if category_id == category.id %}
            <p>
-               <b style="color: #FFA100">Alertas amarillas:</b> {{total_red_yellow_by_category}}
+             <b style="color: #FFA100">Alertas amarillas:</b> {{total_red_yellow_by_category}}
            </p>
           {% endif%}
         {% endfor %}
-        <p>
-        </p>
         <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
         {% for category_id, total_expired_products_by_category in num_expired_products.items %}
           {% if category_id == category.id %}
            <p>
-               <b>Productos vencidos:</b> {{total_expired_products_by_category}}
+             <b>Productos vencidos:</b> {{total_expired_products_by_category}}
            </p>
           {% endif%}
         {% endfor %}
