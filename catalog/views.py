@@ -5,6 +5,7 @@ import datetime
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views import generic
 
 @login_required
 def index(request):
@@ -127,24 +128,41 @@ def product_detalle(request, product_id):
 
 	return render(request, 'catalog/product_detalle.html', context=context)
 
-@login_required
-def products(request):
-	num_products = Product.objects.all()
-	page = request.GET.get(	'page', 1)
+class products(generic.ListView):
+	model = Category
+	context_object_name = 'categories'
+	template_name = 'catalog/products.html'
 
-	paginator = Paginator(num_products, 9)
-	try:
-		num_products = paginator.page(page)
-	except PageNotAnInteger:
-		num_products = paginator.page(1)
-	except EmptyPage:
-		num_products = paginator.page(paginator.num_pages)
 
-	context = {
-		'page': page,
-		'num_products': num_products,
-	}
+from django.core import serializers
+from django.http import HttpResponse
+import json
+class busqueda_products(generic.TemplateView):
 
-	return render(request, 'catalog/products.html', context=context)
+	def get(self, request, *args, **kwargs):
+		id_category = request.GET['id']
+		products = Product.objects.filter(category__id=id_category)
+
+
+		
+		alerts_product={}
+		for product in products:
+			alerts_product[product.id] = product.alert
+
+		# data = serializers.serialize('json', products, fields=('name','category','sub_category','expiration_date','lot','units','alert'))
+		data = serializers.serialize('json', products)
+		data1 = json.loads(data)
+		data1.append(alerts_product)
+		data_response = json.dumps(data1)
+		print('----')
+		print(data_response)
+		print('----')
+		# pdb.set_trace()
+		return HttpResponse(data_response, content_type='application/json')
+
+
+
+	
+
 
 

@@ -7,6 +7,7 @@ urlpatterns = [
 	path('<int:category_id>',views.subcategories,name='subcategories'),
 	path('subcategory/<int:sub_category_id>',views.products_subcategory,name='products_subcategory'),
 	path('product/<int:product_id>',views.product_detalle,name='product_detalle'),
-	path('products',views.products,name='products'),
+	path('products',views.products.as_view(),name='products'),
+	path('busqueda_ajax',views.busqueda_products.as_view(),name='busqueda_products'),
 
 ]

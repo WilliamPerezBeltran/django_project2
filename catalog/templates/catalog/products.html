@@ -10,6 +10,12 @@
                 <div class="row">
                   <div class="col col-xs-6">
                     <h3 class="panel-title">Productos</h3>
+                    <select name="" id="">
+                      <option value="">Elige una categoria</option>
+                      {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -28,77 +34,50 @@
                         <th><em class="fa fa-cog"></em></th>
                     </tr> 
                   </thead>
-                  <tbody>
+                  <tbody id="datos">
 
-                    {% for product in num_products %}
+
+
+
+
+
+
+
+
                       <tr>
-                        <td class="hidden-xs">{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.sub_category}}</td>
-                        <td>{{ product.expiration_date}}</td>
-                        <td>{{ product.lot}}</td>
-                        <td>{{ product.units}}</td>
-                        {% if product.alert == "red_alert" %}
+                        <td class="hidden-xs"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                             <td style="color: red">
                               !Alerta roja!
                               <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
                             </td>
-                          {% elif product.alert == "yellow_alert" %}
                             <td>
                               !Alerta amarilla!
                               <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
                             </td>
-                          {% else %}
                             <td>
                               !Producto vencido!
                                <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
                             </td>
-                        {% endif %}
-                        <td align="center">
-                          <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
-                         
-                        </td>
+                      
                       </tr>
-                    {% endfor %}
+
+
+
+
+
+
+
+
                   </tbody>
                 </table>
               </div>
 
-             <div class="panel-footer">
-            <div class="row">
-              <div class="col col-xs-4">{{num_products}}
-              </div>
-              <div class="col col-xs-8">
-
-                {% if num_products.has_other_pages %}
-                  <ul class="pagination hidden-xs pull-right">
-                    {% if num_products.has_previous %}
-                      <li><a href="?page={{ num_products.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
-
-                    {% for i in num_products.paginator.page_range %}
-                      {% if num_products.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                      {% else %}
-                        <li><a href="?page={{ i }}">{{ i }}</a></li>
-                      {% endif %}
-
-                    {% endfor %}
-
-                    {% if num_products.has_next %}
-                      <li><a href="?page={{ num_products.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                  </ul>
-                {% endif %}
-
-                </div>
-              </div>
-            </div>
             </div>
 
     </div>
@@ -110,5 +89,34 @@
      padding: 0px 15px !important; 
 }
 </style>
+
+
+<script>
+  url = '{% url 'catalog:busqueda_products' %}';
+  csrf_token = '{{ csrf_token }}';
+  $('select').on('change', inicio);
+  function inicio(){
+    var id = $(this).val();
+    console.log('el id de la categorya  ' + id)
+    $.ajax({
+      data:{'id':id},
+      url: url,
+      type: 'get',
+      'csrfmiddlewaretoken': csrf_token,
+      success: function(data){
+        var html = ""
+        
+        data_alert = data[data.length-1]
+        for(var i = 0; i<data.length-1 ; i++){
+          html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+'</td>'+'<td>'+data[i].fields.alert+'</td>'
+        }
+        $('#datos').html(html)
+
+      }
+    });
+  }
+  
+</script>
+
 
 {% endblock %}
