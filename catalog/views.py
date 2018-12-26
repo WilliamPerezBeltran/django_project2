@@ -104,18 +104,9 @@ def subcategories(request, category_id):
 def products_subcategory(request, sub_category_id):
 	subcategory = SubCategory.objects.get(pk=sub_category_id)
 	subcategory_all_products=subcategory.product_set.all()
-	page = request.GET.get(	'page', 1)
-
-	paginator = Paginator(subcategory_all_products, 8)
-	try:
-		subcategory_all_products = paginator.page(page)
-	except PageNotAnInteger:
-		subcategory_all_products = paginator.page(1)
-	except EmptyPage:
-		subcategory_all_products = paginator.page(paginator.num_pages)
+	
 
 	context = {
-		'page': page,
 		'subcategory_all_products': subcategory_all_products,
 		'subcategory': subcategory,
 	}

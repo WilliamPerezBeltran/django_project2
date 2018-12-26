@@ -23,7 +23,62 @@
                 </div>
               </div>
               <div class="panel-body" style="height: 80vh !important;">
-                <table class="table table-striped table-bordered table-list" >
+
+
+
+                <table class="table1 table table-striped table-bordered table-list" >
+                  <thead>
+                    <tr>
+                        <th class="hidden-xs">ID</th>
+                        <th>Producto</th>
+                        <th>Categoria</th>
+                        <th>Subcategoria</th>
+                        <th>Vencimiento</th>
+                        <th>Lote</th>
+                        <th>Unidades</th>
+                        <th>Alerta</th>
+                    </tr> 
+                  </thead>
+                  <tbody >
+
+                     {% for product in products.object_list %}
+                      <tr>
+                        <td class="hidden-xs">{{product.id}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.sub_category}}</td>
+                        <td>{{product.expiration_date}}</td>
+                        <td>{{product.lot}}</td>
+                        <td>{{product.units}}</td>
+                            {% if product.alert == "red_alert" %}
+                              <td style="color: red">
+                                !Alerta roja!
+                                <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
+                              </td>
+
+                              {% elif product.alert == "yellow_alert" %}
+                                <td style="color: #FFA100">
+                                  !Alerta amarilla!
+                                  <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
+                                </td>
+                                
+                              {% else %}
+                              <td>
+                                !Producto vencido!
+                                 <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
+                              </td>
+                            {% endif %}
+                      
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+
+
+
+
+                <table id="example2" style="width:100%" class=" display table2 table table-striped table-bordered table-list" >
                   <thead>
                     <tr>
                         <th class="hidden-xs">ID</th>
@@ -38,38 +93,13 @@
                   </thead>
                   <tbody id="datos">
 
-                     {% for product in products.object_list %}
-                      <tr>
-                        <td class="hidden-xs">{{product.id}}</td>
-                        <td>{{product.name}}</td>
-                        <td>{{product.category}}</td>
-                        <td>{{product.sub_category}}</td>
-                        <td>{{product.expiration_date}}</td>
-                        <td>{{product.lot}}</td>
-                        <td>{{product.units}}</td>
-                            {% if product.alert == "red_alert" %}
-            <td style="color: red">
-              !Alerta roja!
-              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
-            </td>
-
-            {% elif product.alert == "yellow_alert" %}
-              <td style="color: #FFA100">
-                !Alerta amarilla!
-                <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
-              </td>
-              
-            {% else %}
-            <td>
-              !Producto vencido!
-               <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
-            </td>
-            {% endif %}
-                      
-                      </tr>
-                    {% endfor %}
                   </tbody>
                 </table>
+
+
+
+
+
               </div>
 
 
@@ -82,7 +112,7 @@
                   <div class="col col-xs-8">
 
                     {# The following renders the pagination html #}
-                    <div id="pagination">
+                    <div class="table1" id="pagination">
                         {{ products.render }}
                     </div>
 
@@ -107,10 +137,21 @@
 
 
 <script>
+
+   $('.table2').hide();
+
+
+ 
+
+
   url = '{% url 'catalog:busqueda_products' %}';
   csrf_token = '{{ csrf_token }}';
   $('select').on('change', inicio);
   function inicio(){
+
+
+    
+
     var optionSelected = $(this).find("option:selected");
     var valueCategory  = optionSelected.val();
     var category_name   = optionSelected.text();
@@ -133,6 +174,9 @@
       type: 'get',
       'csrfmiddlewaretoken': csrf_token,
       success: function(data){
+        $('.table1').hide();
+        $('.table2').show();
+
         console.log('exito exito exito exito exito ')
         console.log(data)
         var html = ""
@@ -149,6 +193,7 @@
             console.log(data[data.length-1])
               $("#selectcities").append('<option>'+data[data.length-1][i].name +'</option>');
           };
+
 
 
 
@@ -178,11 +223,17 @@
 
           }
 
-          // html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+'</td>'+'<td>'+data[i].fields.alert+'</td>'
 
           html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+cell_alert
         }
         $('#datos').html(html)
+
+
+        $('#example2').DataTable();
+
+
+
+
 
       }
     });
