@@ -29,7 +29,7 @@
         </thead>
         <tbody>
 
-          {% for product in subcategory_all_products %}
+          {% for product in subcategory_all_products.object_list %}
           <tr class="">
             <td class="hidden-xs">{{ product.id }}</td>
             <td>{{ product.name }}</td>
@@ -43,7 +43,7 @@
             </td>
 
             {% elif product.alert == "yellow_alert" %}
-              <td>
+              <td style="color: background: #FFA100">
                 !Alerta amarilla!
                 <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
               </td>
