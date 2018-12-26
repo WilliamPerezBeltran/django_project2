@@ -2,44 +2,61 @@
 
 {% block content %}
 
-<div class="container" >    
-	<div class="row" style=" display: flex;justify-content: center;align-items: center;">
-		<div class="col-sm-8" >				
-			<div style="" class="panel panel-default  panel--styled">
-				<div class="panel-body">
-					<h4>Detalle del producto</h4>
-					<div class="col-md-12 panelTop">	
-						<div class="col-md-4">	
-							<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
-						</div>
-						<div class="col-md-8">	
-							<p> <b>Nombre del producto:</b> {{product.name}}</p>
-							<p> <b>Fecha de fabricación:</b> {{product.date}}</p>
-							<p> <b>Fecha de vencimiento:</b> {{product.expiration_date}}</p>
-							<p> <b>Lote del producto:</b> {{product.lot}}</p>
-							<p> <b>Cantidad recibida:</b> {{product.units}}</p>
-							<p> <b>Categoria:</b> {{product.category}}</p>
-							<p> <b>Subcategoria:</b> {{product.sub_category}}</p>
-							<p> 
-								<b>Alerta:</b> 
-								{% if product.alert == "red_alert" %}
-								Alerta roja
-								{% elif product.alert == "yellow_alert" %}
-								Alerta amarilla
-								{% else %}
-								Producto vencido
-								{% endif %}
-							</p>
+<div class="col-md-12">
+	<div class="panel panel-default panel-table">
+		<div class="panel-heading">
+			<div class="row">
+				<div style="display: flex; justify-content:space-around; align-items: center;" class="col col-xs-12">
+					<p>Categoria: <b> {{product.category}}</b></p>
+					<p>Productos de la subcategoria <b>{{product.sub_category}}</b></p>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body" style="height: 80vh !important; background: white">
+			<div class="row" style=" display: flex;justify-content: center;align-items: center;">
+				<div class="col-sm-8" >				
+					<div style="" class="panel panel-default  panel--styled">
+						<div class="panel-body">
+							<h4>Detalle del producto</h4>
+							<div class="col-md-12 panelTop">	
+								<div class="col-md-4">	
+									<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
+								</div>
+								<div class="col-md-8">	
+									<p> <b>Nombre del producto:</b> {{product.name}}</p>
+									<p> <b>Fecha de fabricación:</b> {{product.date}}</p>
+									<p> <b>Fecha de vencimiento:</b> {{product.expiration_date}}</p>
+									<p> <b>Lote del producto:</b> {{product.lot}}</p>
+									<p> <b>Cantidad recibida:</b> {{product.units}}</p>
+									<p> <b>Categoria:</b> {{product.category}}</p>
+									<p> <b>Subcategoria:</b> {{product.sub_category}}</p>
+									<p> 
+										<b>Alerta:</b> 
+										{% if product.alert == "red_alert" %}
+										Alerta roja
+										{% elif product.alert == "yellow_alert" %}
+										Alerta amarilla
+										{% else %}
+										Producto vencido
+										{% endif %}
+									</p>
+								</div>
+							</div>
+							<div class="col-md-12 panelBottom" >
+								<div class="col-md-4" >
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<div class="col-md-12 panelBottom" >
-						<div class="col-md-4" >
-							<a href="{% url 'catalog:products_subcategory' product.sub_category.id %}">
-								<button class="btn btn-primary btn-lg btn-add-to-cart"></span> Volver a la subcategoría del producto</button>
-							</a>
-						</div>
-					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<div class="row">
+				<div class="col col-xs-4">
+					footer
+				</div>
+				<div class="col col-xs-8">
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,6 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -10,6 +9,16 @@
                 <div class="row">
                   <div class="col col-xs-6">
                     <h3 class="panel-title">Productos</h3>
+                    <select name="selectcountries" id="selectcountries">
+                      <option value="">Elige una categoría</option>
+                      {{categories.count}}
+                      {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                      {% endfor %}
+                    </select>
+                     <select name ="selectcities" id="selectcities">
+                       <option value="">Elige una subcategoría</option>
+                     </select>
                   </div>
                 </div>
               </div>
@@ -25,82 +34,67 @@
                         <th>Lote</th>
                         <th>Unidades</th>
                         <th>Alerta</th>
-                        <th><em class="fa fa-cog"></em></th>
                     </tr> 
                   </thead>
-                  <tbody>
+                  <tbody id="datos">
 
-                    {% for product in num_products %}
+                     {% for product in products.object_list %}
                       <tr>
-                        <td class="hidden-xs">{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.sub_category}}</td>
-                        <td>{{ product.expiration_date}}</td>
-                        <td>{{ product.lot}}</td>
-                        <td>{{ product.units}}</td>
-                        {% if product.alert == "red_alert" %}
-                            <td style="color: red">
-                              !Alerta roja!
-                              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
-                            </td>
-                          {% elif product.alert == "yellow_alert" %}
-                            <td>
-                              !Alerta amarilla!
-                              <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
-                            </td>
-                          {% else %}
-                            <td>
-                              !Producto vencido!
-                               <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
-                            </td>
-                        {% endif %}
-                        <td align="center">
-                          <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
-                         
-                        </td>
+                        <td class="hidden-xs">{{product.id}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.sub_category}}</td>
+                        <td>{{product.expiration_date}}</td>
+                        <td>{{product.lot}}</td>
+                        <td>{{product.units}}</td>
+                            {% if product.alert == "red_alert" %}
+            <td style="color: red">
+              !Alerta roja!
+              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
+            </td>
+
+            {% elif product.alert == "yellow_alert" %}
+              <td style="color: #FFA100">
+                !Alerta amarilla!
+                <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
+              </td>
+              
+            {% else %}
+            <td>
+              !Producto vencido!
+               <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
+            </td>
+            {% endif %}
+                      
                       </tr>
                     {% endfor %}
                   </tbody>
                 </table>
               </div>
 
-             <div class="panel-footer">
-            <div class="row">
-              <div class="col col-xs-4">{{num_products}}
-              </div>
-              <div class="col col-xs-8">
 
-                {% if num_products.has_other_pages %}
-                  <ul class="pagination hidden-xs pull-right">
-                    {% if num_products.has_previous %}
-                      <li><a href="?page={{ num_products.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
 
-                    {% for i in num_products.paginator.page_range %}
-                      {% if num_products.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                      {% else %}
-                        <li><a href="?page={{ i }}">{{ i }}</a></li>
-                      {% endif %}
 
-                    {% endfor %}
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col col-xs-4">
+                  </div>
+                  <div class="col col-xs-8">
 
-                    {% if num_products.has_next %}
-                      <li><a href="?page={{ num_products.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                  </ul>
-                {% endif %}
+                    {# The following renders the pagination html #}
+                    <div id="pagination">
+                        {{ products.render }}
+                    </div>
 
+                  </div>
                 </div>
               </div>
-            </div>
-            </div>
 
+
+
+
+
+            </div>
     </div>
   </div>
 </div>
@@ -110,5 +104,91 @@
      padding: 0px 15px !important; 
 }
 </style>
+
+
+<script>
+  url = '{% url 'catalog:busqueda_products' %}';
+  csrf_token = '{{ csrf_token }}';
+  $('select').on('change', inicio);
+  function inicio(){
+    var optionSelected = $(this).find("option:selected");
+    var valueCategory  = optionSelected.val();
+    var category_name   = optionSelected.text();
+    console.log('********************')
+    console.log('optionSelected')
+    console.log(optionSelected)
+    console.log('valueCategory')
+    console.log(valueCategory)
+
+    console.log('category_name')
+    console.log(category_name)
+    console.log('********************')
+
+
+    var id = $(this).val();
+    console.log('el id de la categorya  ' + id)
+    $.ajax({
+      data:{'id':id},
+      url: url,
+      type: 'get',
+      'csrfmiddlewaretoken': csrf_token,
+      success: function(data){
+        console.log('exito exito exito exito exito ')
+        console.log(data)
+        var html = ""
+        category_id = data[data.length-1]
+        console.log(data[data.length-1])
+        console.log(data[data.length-1])
+        console.log(data[data.length-1])
+        console.log(data[data.length-1])
+        console.log(data[data.length-1].length)
+
+        $("#selectcities option").remove();
+          for (var i = 0; i<data[data.length-1].length ; i++) {
+            console.log('dentro del for')
+            console.log(data[data.length-1])
+              $("#selectcities").append('<option>'+data[data.length-1][i].name +'</option>');
+          };
+
+
+
+
+        
+        data_alert = data[data.length-1]
+        cell_alert = ''
+
+        for(var i = 0; i<data.length-2 ; i++){
+          if (data[i].fields.alert =='vencido') {
+            data[i].fields.alert = '!Producto vencido!'
+
+            cell_alert = '<td>'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></td>'
+
+          }else if (data[i].fields.alert =='yellow_alert'){
+            data[i].fields.alert = '!Alerta amarilla!'
+
+            cell_alert = '<td style="color: #FFA100">'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></td>'
+
+          }else if (data[i].fields.alert =='red_alert'){
+            data[i].fields.alert = '!Alerta roja!'
+
+            cell_alert = '<td style="color: red"> '+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></td>'
+
+          }else if (data[i].fields.alert ==  null){
+            data[i].fields.alert = 'Falta tiempo para su vencimiento'
+
+          }
+
+          // html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+'</td>'+'<td>'+data[i].fields.alert+'</td>'
+
+          html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+cell_alert
+        }
+        $('#datos').html(html)
+
+      }
+    });
+  }
+  
+</script>
+
 
 {% endblock %}
