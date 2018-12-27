@@ -4,56 +4,52 @@
 
 
 
-<div  class="container">
-  <div  class="row">
-    <!-- <div  class="col-sm-6 col-sm-offset-3"> -->
-    <div style=" width:100% !important;height: 100vh; display: flex;justify-content: center;align-items: center;">
+<div  class="col-sm-12" style="background: ">
+  <div style=" width:100% !important;height: 100vh; display: flex;justify-content: center;align-items: center; margin-left: 10%;">
 
-      {% if form.errors %}
-      <p>El usuario o password no coinciden. Por favor trate de nuevo.</p>
-      {% endif %}
+    {% if form.errors %}
+    <p>El usuario o password no coinciden. Por favor trate de nuevo.</p>
+    {% endif %}
 
-      
 
-   <div class="well" >
-        <div style=" display: flex;justify-content: center;align-items: center; margin-bottom: 30px;">
-          <h1>Login</h1>
-        </div>
 
-        {% if next %}
-        {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-        {% else %}
-        <p>Please login to see this page.</p>
-        {% endif %}
-      {% endif %}
-        
-        
-          <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="id_username">Your name: </label>
-                <input class="form-control input-lg" id="id_username" type="text" name="username" value="{{ current_name }}">
-            </div>
-            <div class="form-group">
-              <label for="id_password">password: </label>
-              <input class="form-control input-lg" id="id_password" type="password" name="password" value="{{ password }}">
-            </div>
-            <input class="btn btn-primary" type="submit" value="Ingresar" />
-            <input type="hidden" name="next" value="{{ next }}" />
-          </form>
-
-          {# Assumes you setup the password_reset view in your URLconf #}
-          <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    <div class="well" >
+      <div style=" display: flex;justify-content: center;align-items: center; margin-bottom: 30px;">
+        <h1>Login</h1>
       </div>
-  
-     
+
+      {% if next %}
+      {% if user.is_authenticated %}
+      <p>Tu cuenta no tiene acceso a esta pagina. Para proceder porfavor logeese para tener poder ingresar al administrador</p>
+      {% else %}
+      <p>Ingresa tus credenciales para poder entrar al administrador</p>
+      {% endif %}
+      {% endif %}
 
 
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
 
+        <div class="form-group">
+          <label for="id_username">Usuario: </label>
+          <input class="form-control input-lg" id="id_username" type="text" name="username" value="{{ current_name }}">
+        </div>
+        <div class="form-group">
+          <label for="id_password">password: </label>
+          <input class="form-control input-lg" id="id_password" type="password" name="password" value="{{ password }}">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Ingresar" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+
+      {# Assumes you setup the password_reset view in your URLconf #}
+      <!-- <p><a href="{% url 'password_reset' %}">Lost password?</a></p> -->
     </div>
+
+
+
+
+
   </div>
 </div>
 {% endblock %}
