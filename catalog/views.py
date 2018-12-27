@@ -154,28 +154,47 @@ except ImportError:
 class busqueda_products(generic.TemplateView):
 
 	def get(self, request, *args, **kwargs):
-		id_category = request.GET['id']
-		products = Product.objects.filter(category__id=id_category)
-		category = Category.objects.get(id=id_category)
-		subcategories = category.subcategory_set.all()
-		result_set = []
 
-		for subcategory in subcategories:
-			result_set.append({'name': subcategory.name})
+		# pdb.set_trace()
+		if request.method == 'GET':
+			if request.GET.get('selectCategory'):
+				id_category = request.GET['category_id']
+				
+				products = Product.objects.filter(category__id=id_category)
+				category = Category.objects.get(id=id_category)
+				subcategories = category.subcategory_set.all()
+				result_set = []
 
-		alerts_product={}
-		for product in products:
-			alerts_product[product.id] = product.alert
+				for subcategory in subcategories:
+					result_set.append({'name': subcategory.name,'id':subcategory.id})
 
-		data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
-		# data_products = serializers.serialize('json', products)
-		data_categories = result_set
-		data1 = json.loads(data_products)
-		data1.append(alerts_product)
-		data1.append(data_categories)
-		data_response = json.dumps(data1)
+				data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
+				data_categories = result_set
+				data1 = json.loads(data_products)
+				data1.append(data_categories)
+				data_response = json.dumps(data1)
 
-		return HttpResponse(data_response, content_type='application/json')
+				return HttpResponse(data_response, content_type='application/json')
+
+			elif request.GET.get('selectSubCategory'):
+				category_id = request.GET.get('category_id')
+
+				subCategory_id = request.GET.get('subCategory_id')
+				products = Product.objects.filter(category__id=category_id, sub_category__id=subCategory_id)
+				category = Category.objects.get(id=category_id)
+				subcategories = category.subcategory_set.all()
+				result_set = []
+
+				for subcategory in subcategories:
+					result_set.append({'name': subcategory.name,'id':subcategory.id})
+
+				data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
+				data_categories = result_set
+				data1 = json.loads(data_products)
+				data1.append(data_categories)
+				data_response = json.dumps(data1)
+
+				return HttpResponse(data_response, content_type='application/json')
 
 
 from django.core.serializers.base import Serializer as BaseSerializer

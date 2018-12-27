@@ -9,23 +9,20 @@
                 <div class="row">
                   <div class="col col-xs-6">
                     <h3 class="panel-title">Productos</h3>
-                    <select name="selectcountries" id="selectcountries">
+                    <select name="selectCategory" id="selectCategory">
                       <option value="">Elige una categoría</option>
                       {{categories.count}}
                       {% for category in categories %}
                         <option value="{{category.id}}">{{category.name}}</option>
                       {% endfor %}
                     </select>
-                     <select name ="selectcities" id="selectcities">
+                     <select name ="selectSubCategoria" id="selectSubCategoria">
                        <option value="">Elige una subcategoría</option>
                      </select>
                   </div>
                 </div>
               </div>
               <div class="panel-body" style="height: 80vh !important;">
-
-
-
                 <table class="table1 table table-striped table-bordered table-list" >
                   <thead>
                     <tr>
@@ -40,7 +37,6 @@
                     </tr> 
                   </thead>
                   <tbody >
-
                      {% for product in products.object_list %}
                       <tr>
                         <td class="hidden-xs">{{product.id}}</td>
@@ -74,10 +70,6 @@
                   </tbody>
                 </table>
 
-
-
-
-
                 <table id="example2" style="width:100%" class=" display table2 table table-striped table-bordered table-list" >
                   <thead>
                     <tr>
@@ -95,11 +87,6 @@
 
                   </tbody>
                 </table>
-
-
-
-
-
               </div>
 
 
@@ -110,19 +97,13 @@
                   <div class="col col-xs-4">
                   </div>
                   <div class="col col-xs-8">
-
                     {# The following renders the pagination html #}
                     <div class="table1" id="pagination">
                         {{ products.render }}
                     </div>
-
                   </div>
                 </div>
               </div>
-
-
-
-
 
             </div>
     </div>
@@ -137,44 +118,52 @@
 
 
 <script>
-
-   $('.table2').hide();
-
-
- 
-
-
+  $('.table2').hide();
   url = '{% url 'catalog:busqueda_products' %}';
   csrf_token = '{{ csrf_token }}';
-  $('select').on('change', inicio);
-  function inicio(){
+  $('#selectCategory').on('change', triggerCategorySelect);
+  function triggerCategorySelect(){
+    var category_id = $(this).val();
 
-
-    
-
-    var optionSelected = $(this).find("option:selected");
-    var valueCategory  = optionSelected.val();
-    var category_name   = optionSelected.text();
-    console.log('********************')
-    console.log('optionSelected')
-    console.log(optionSelected)
-    console.log('valueCategory')
-    console.log(valueCategory)
-
-    console.log('category_name')
-    console.log(category_name)
-    console.log('********************')
-
-
-    var id = $(this).val();
-    console.log('el id de la categorya  ' + id)
     $.ajax({
-      data:{'id':id},
+      data:{
+        'category_id':category_id,
+        'selectCategory':true,
+      },
       url: url,
       type: 'get',
       'csrfmiddlewaretoken': csrf_token,
       success: function(data){
-        $('.table1').hide();
+        responseDataSuccess(data)
+      }
+    });
+  }
+
+
+
+  $('#selectSubCategoria').on('change', triggerSubCategorySelect);
+  function triggerSubCategorySelect(){
+    var category_select = $('#selectCategory').find("option:selected");
+    
+    var subCategory_select = $('#selectSubCategoria').find("option:selected");
+    $.ajax({
+      data:{
+        'category_id':category_select.val(),
+        'subCategory_id':subCategory_select.val(),
+        'selectSubCategory':true,
+      },
+      url: url,
+      type: 'get',
+      'csrfmiddlewaretoken': csrf_token,
+      success: function(data){
+        responseDataSuccess(data)
+      }
+    });
+  }
+
+
+  function responseDataSuccess(data){
+    $('.table1').hide();
         $('.table2').show();
 
         console.log('exito exito exito exito exito ')
@@ -187,17 +176,12 @@
         console.log(data[data.length-1])
         console.log(data[data.length-1].length)
 
-        $("#selectcities option").remove();
+        $("#selectSubCategoria option").remove();
           for (var i = 0; i<data[data.length-1].length ; i++) {
             console.log('dentro del for')
             console.log(data[data.length-1])
-              $("#selectcities").append('<option>'+data[data.length-1][i].name +'</option>');
+              $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
           };
-
-
-
-
-
         
         data_alert = data[data.length-1]
         cell_alert = ''
@@ -223,20 +207,11 @@
 
           }
 
-
           html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+cell_alert
         }
         $('#datos').html(html)
-
-
         $('#example2').DataTable();
 
-
-
-
-
-      }
-    });
   }
   
 </script>
