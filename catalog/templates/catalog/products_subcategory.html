@@ -20,23 +20,26 @@
       <table id="table1" class="table table-bordered ">
         <thead>
           <tr>
-            <th class="hidden-xs">ID</th>
             <th>Producto</th>
-            <th>Categoria</th>
-            <th>Subcategoria</th>
+            <th>Categoría</th>
+            <th>Subcategoría</th>
+            <th>Vencimiento</th>
+            <th>Lote</th>
+            <th>Unidades</th>
             <th>alerta</th>
-            <th><em class="fa fa-cog"></em></th>
+            <th></th>
           </tr> 
         </thead>
         <tbody>
 
           {% for product in subcategory_all_products %}
           <tr class="">
-            <td class="hidden-xs">{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.category }}</td>
             <td>{{ subcategory.name}}</td>
-            <!-- <td>{{ product.alert}}</td> -->
+            <td>{{ product.expiration_date}}</td>
+            <td>{{ product.lot}}</td>
+            <td>{{ product.units}}</td>
             {% if product.alert == "red_alert" %}
             <td style="color: red">
               !Alerta roja!
@@ -56,9 +59,20 @@
             </td>
             {% endif %}
             <td align="center">
-              <a href="{% url 'catalog:product_detalle' product.id %}" class="btn btn-default"><em class="">Ver detalle</em></a>
-              <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
-              <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+              <a href="{% url 'catalog:product_detalle' product.id %}" 
+              style="color: #333 !important; padding: 5px;border-radius: 5%;
+    border: 1px solid #979797;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));
+    background: -webkit-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: -o-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);">
+                Detalle
+              </a>
+              <!-- <a class="btn btn-default"><em class="fa fa-pencil"></em></a> -->
+              <!-- <a class="btn btn-danger"><em class="fa fa-trash"></em></a> -->
             </td>
           </tr>
           {% endfor %}

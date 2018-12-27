@@ -94,9 +94,8 @@
 
               <div class="panel-footer">
                 <div class="row">
-                  <div class="col col-xs-4">
-                  </div>
-                  <div class="col col-xs-8">
+                  
+                  <div style="display: flex;justify-content: center;align-items: center;" class="col col-xs-12">
                     {# The following renders the pagination html #}
                     <div class="table1" id="pagination">
                         {{ products.render }}
@@ -111,9 +110,60 @@
 </div>
 
 <style>
-  .panel-footer {
-     padding: 0px 15px !important; 
+
+.pagination a {
+color: #007bc7;
+float: left;
+padding: 10px 16px;
+text-decoration: none;
+border-right: 1px solid #bfbfbf;
+border-top: 1px solid #bfbfbf;
+border-bottom: 1px solid #bfbfbf;
 }
+.pagination span {
+color: #007bc7;
+float: left;
+padding: 10px 16px;
+text-decoration: none;
+border-right: 1px solid #bfbfbf;
+border-top: 1px solid #bfbfbf;
+border-bottom: 1px solid #bfbfbf;
+}
+.pagination .panel-heading {
+color: #007bc7;
+float: left;
+padding: 10px 16px;
+text-decoration: none;
+border-right: 1px solid #bfbfbf;
+border-top: 1px solid #bfbfbf;
+border-bottom: 1px solid #bfbfbf;
+}
+
+.pagination a:first-child {
+
+border-left: 1px solid #bfbfbf;
+
+}
+.pagination a:last-child {
+
+border-left: 1px solid #bfbfbf;
+
+}
+
+
+
+
+
+
+.panel-footer {
+   padding: 0px 15px !important; 
+}
+.pagination a:hover {
+background-color: #346187;
+color: #FFF;
+}
+
+
 </style>
 
 
@@ -163,23 +213,17 @@
 
 
   function responseDataSuccess(data){
-    $('.table1').hide();
+        $('.table1').remove();
+        $('.table1').hide();
         $('.table2').show();
 
-        console.log('exito exito exito exito exito ')
+        console.log('responseDataSuccess ')
         console.log(data)
         var html = ""
         category_id = data[data.length-1]
-        console.log(data[data.length-1])
-        console.log(data[data.length-1])
-        console.log(data[data.length-1])
-        console.log(data[data.length-1])
-        console.log(data[data.length-1].length)
 
         $("#selectSubCategoria option").remove();
           for (var i = 0; i<data[data.length-1].length ; i++) {
-            console.log('dentro del for')
-            console.log(data[data.length-1])
               $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
           };
         

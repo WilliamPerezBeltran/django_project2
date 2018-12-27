@@ -123,6 +123,7 @@ def product_detalle(request, product_id):
 	return render(request, 'catalog/product_detalle.html', context=context)
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+@login_required
 def products(request):
 
 	categories = Category.objects.all()
@@ -164,6 +165,8 @@ class busqueda_products(generic.TemplateView):
 				category = Category.objects.get(id=id_category)
 				subcategories = category.subcategory_set.all()
 				result_set = []
+
+				result_set.append({'name':'Eliga una subcategoría' ,'id':''})
 
 				for subcategory in subcategories:
 					result_set.append({'name': subcategory.name,'id':subcategory.id})
