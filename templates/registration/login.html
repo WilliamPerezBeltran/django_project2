@@ -7,9 +7,7 @@
 <div  class="col-sm-12" style="background: ">
   <div style=" width:100% !important;height: 100vh; display: flex;justify-content: center;align-items: center; margin-left: 10%;">
 
-    {% if form.errors %}
-    <p>El usuario o password no coinciden. Por favor trate de nuevo.</p>
-    {% endif %}
+    
 
 
 
@@ -18,12 +16,18 @@
         <h1>Login</h1>
       </div>
 
+
       {% if next %}
-      {% if user.is_authenticated %}
-      <p>Tu cuenta no tiene acceso a esta pagina. Para proceder porfavor logeese para tener poder ingresar al administrador</p>
-      {% else %}
-      <p>Ingresa tus credenciales para poder entrar al administrador</p>
-      {% endif %}
+        {% if user.is_authenticated %}
+        <p>Tu cuenta no tiene acceso a esta pagina. Para proceder porfavor logeese para tener poder ingresar al administrador</p>
+        {% else %}
+          {%if form.errors %}
+            <p>El usuario o password no coinciden. Por favor trate de nuevo.</p>
+          {% else %}
+             <p>Ingresa tus credenciales para poder entrar al administrador</p>
+          {% endif %}
+       
+        {% endif %}
       {% endif %}
 
 
