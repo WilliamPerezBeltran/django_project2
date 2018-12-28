@@ -265,8 +265,15 @@
     category_id = data[data.length-1]
 
     $("#selectSubCategoria option").remove();
+    // dibuja las subcategorias en el select 
     for (var i = 0; i<data[data.length-1].length ; i++) {
-      $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
+      if(data[data.length-1][i].subcategory_id_selected){
+        $("#selectSubCategoria").append('<option selected="selected" value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
+
+      }else{
+        $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
+
+      }
     };
 
     data_alert = data[data.length-1]

@@ -43,7 +43,6 @@ class Product(models.Model):
         expiration_red = self.expiration_date - timedelta(days=30)
         expiration_yellow = self.expiration_date - timedelta(days=60)
         current_date = datetime.datetime.now().date()
-        vencido = "vencido"
 
         if current_date >= self.expiration_date:
             return self.EXPIRED_PRODUCT 

@@ -104,6 +104,7 @@ def subcategories(request, category_id):
 def products_subcategory(request, sub_category_id):
 	subcategory = SubCategory.objects.get(pk=sub_category_id)
 	subcategory_all_products=subcategory.product_set.all()
+
 	
 
 	context = {
@@ -128,6 +129,7 @@ def products(request):
 
 	categories = Category.objects.all()
 	all_products = Product.objects.all().order_by('-expiration_date')
+	# pdb.set_trace()
 
 	try:
 		page = request.GET.get('page', 1)
@@ -188,8 +190,17 @@ class busqueda_products(generic.TemplateView):
 				subcategories = category.subcategory_set.all()
 				result_set = []
 
+
+
+
 				for subcategory in subcategories:
-					result_set.append({'name': subcategory.name,'id':subcategory.id})
+					if str(subcategory.id) == str(subCategory_id):
+						result_set.append({'name': subcategory.name,'id':subcategory.id,'subcategory_id_selected': True})
+					else:
+						result_set.append({'name': subcategory.name,'id':subcategory.id})
+
+
+
 
 				data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
 				data_categories = result_set
