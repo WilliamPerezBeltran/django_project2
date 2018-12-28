@@ -2,151 +2,167 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default panel-table" >
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col col-xs-6">
-                    <h3 class="panel-title">Productos</h3>
-                    <select name="selectCategory" id="selectCategory">
-                      <option value="">Elige una categoría</option>
-                      {{categories.count}}
-                      {% for category in categories %}
-                        <option value="{{category.id}}">{{category.name}}</option>
-                      {% endfor %}
-                    </select>
-                     <select name ="selectSubCategoria" id="selectSubCategoria">
-                       <option value="">Elige una subcategoría</option>
-                     </select>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body" style="height: 80vh !important;">
-                <table class="table1 table table-striped table-bordered table-list" >
-                  <thead>
-                    <tr>
-                        <th class="hidden-xs">ID</th>
-                        <th>Producto</th>
-                        <th>Categoria</th>
-                        <th>Subcategoria</th>
-                        <th>Vencimiento</th>
-                        <th>Lote</th>
-                        <th>Unidades</th>
-                        <th>Alerta</th>
-                    </tr> 
-                  </thead>
-                  <tbody >
-                     {% for product in products.object_list %}
-                      <tr>
-                        <td class="hidden-xs">{{product.id}}</td>
-                        <td>{{product.name}}</td>
-                        <td>{{product.category}}</td>
-                        <td>{{product.sub_category}}</td>
-                        <td>{{product.expiration_date}}</td>
-                        <td>{{product.lot}}</td>
-                        <td>{{product.units}}</td>
-                            {% if product.alert == "red_alert" %}
-                              <td style="color: red">
-                                !Alerta roja!
-                                <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
-                              </td>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default panel-table" >
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col col-xs-6">
+              <h3 class="panel-title">Productos</h3>
+              <div style="display: flex;">
 
-                              {% elif product.alert == "yellow_alert" %}
-                                <td style="color: #FFA100">
-                                  !Alerta amarilla!
-                                  <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
-                                </td>
-                                
-                              {% else %}
-                              <td>
-                                !Producto vencido!
-                                 <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
-                              </td>
-                            {% endif %}
-                      
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                <select name="selectCategory" id="selectCategory">
+                  <option value="">Elige una categoría</option>
+                  {{categories.count}}
+                  {% for category in categories %}
+                  <option value="{{category.id}}">{{category.name}}</option>
+                  {% endfor %}
+                </select>
+                <select name ="selectSubCategoria" id="selectSubCategoria">
+                 <option value="">Elige una subcategoría</option>
+               </select>
 
-                <table id="example2" style="width:100%" class=" display table2 table table-striped table-bordered table-list" >
-                  <thead>
-                    <tr>
-                        <th class="hidden-xs">ID</th>
-                        <th>Producto</th>
-                        <th>Categoria</th>
-                        <th>Subcategoria</th>
-                        <th>Vencimiento</th>
-                        <th>Lote</th>
-                        <th>Unidades</th>
-                        <th>Alerta</th>
-                    </tr> 
-                  </thead>
-                  <tbody id="datos">
+               <select name ="alertas" id="alertas">
+                 <option value="">Elige alertas</option>
+                 <option value="vencido">Producto vencido</option>
+                 <option value="roja">Alerta roja</option>
+                 <option value="amarilla">Alerta amarilla</option>
+                 <option value="Alerta">Alertas rojas y amarillas </option>
+               </select>
 
-                  </tbody>
-                </table>
-              </div>
+             </div>
 
 
+           </div>
 
 
-              <div class="panel-footer">
-                <div class="row">
-                  
-                  <div style="display: flex;justify-content: center;align-items: center;" class="col col-xs-12">
-                    {# The following renders the pagination html #}
-                    <div class="table1" id="pagination">
-                        {{ products.render }}
-                    </div>
-                  </div>
-                </div>
-              </div>
+         </div>
+       </div>
+       <div class="panel-body" style="height: 80vh !important;">
+        <table class="table1 table table-striped table-bordered table-list" >
+          <thead>
+            <tr>
+              <th class="hidden-xs">ID</th>
+              <th>Producto</th>
+              <th>Categoria</th>
+              <th>Subcategoria</th>
+              <th>Vencimiento</th>
+              <th>Lote</th>
+              <th>Unidades</th>
+              <th>Alerta</th>
+            </tr> 
+          </thead>
+          <tbody >
+           {% for product in products.object_list %}
+           <tr>
+            <td class="hidden-xs">{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.category}}</td>
+            <td>{{product.sub_category}}</td>
+            <td>{{product.expiration_date}}</td>
+            <td>{{product.lot}}</td>
+            <td>{{product.units}}</td>
+            {% if product.alert == "red_alert" %}
+            <td style="color: red">
+              !Alerta roja!
+              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
+            </td>
 
-            </div>
+            {% elif product.alert == "yellow_alert" %}
+            <td style="color: #FFA100">
+              !Alerta amarilla!
+              <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
+            </td>
+
+            {% else %}
+            <td>
+              !Producto vencido!
+              <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
+            </td>
+            {% endif %}
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <table id="example2" style="width:100%" class=" display table2 table table-striped table-bordered table-list" >
+        <thead>
+          <tr>
+            <th class="hidden-xs">ID</th>
+            <th>Producto</th>
+            <th>Categoria</th>
+            <th>Subcategoria</th>
+            <th>Vencimiento</th>
+            <th>Lote</th>
+            <th>Unidades</th>
+            <th>Alerta</th>
+          </tr> 
+        </thead>
+        <tbody id="datos">
+
+        </tbody>
+      </table>
     </div>
+
+
+
+
+    <div class="panel-footer">
+      <div class="row">
+
+        <div style="display: flex;justify-content: center;align-items: center;" class="col col-xs-12">
+          {# The following renders the pagination html #}
+          <div class="table1" id="pagination">
+            {{ products.render }}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+</div>
+</div>
 </div>
 
 <style>
 
 .pagination a {
-color: #007bc7;
-float: left;
-padding: 10px 16px;
-text-decoration: none;
-border-right: 1px solid #bfbfbf;
-border-top: 1px solid #bfbfbf;
-border-bottom: 1px solid #bfbfbf;
+  color: #007bc7;
+  float: left;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-right: 1px solid #bfbfbf;
+  border-top: 1px solid #bfbfbf;
+  border-bottom: 1px solid #bfbfbf;
 }
 .pagination span {
-color: #007bc7;
-float: left;
-padding: 10px 16px;
-text-decoration: none;
-border-right: 1px solid #bfbfbf;
-border-top: 1px solid #bfbfbf;
-border-bottom: 1px solid #bfbfbf;
+  color: #007bc7;
+  float: left;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-right: 1px solid #bfbfbf;
+  border-top: 1px solid #bfbfbf;
+  border-bottom: 1px solid #bfbfbf;
 }
 .pagination .panel-heading {
-color: #007bc7;
-float: left;
-padding: 10px 16px;
-text-decoration: none;
-border-right: 1px solid #bfbfbf;
-border-top: 1px solid #bfbfbf;
-border-bottom: 1px solid #bfbfbf;
+  color: #007bc7;
+  float: left;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-right: 1px solid #bfbfbf;
+  border-top: 1px solid #bfbfbf;
+  border-bottom: 1px solid #bfbfbf;
 }
 
 .pagination a:first-child {
 
-border-left: 1px solid #bfbfbf;
+  border-left: 1px solid #bfbfbf;
 
 }
 .pagination a:last-child {
 
-border-left: 1px solid #bfbfbf;
+  border-left: 1px solid #bfbfbf;
 
 }
 
@@ -156,11 +172,11 @@ border-left: 1px solid #bfbfbf;
 
 
 .panel-footer {
-   padding: 0px 15px !important; 
+ padding: 0px 15px !important; 
 }
 .pagination a:hover {
-background-color: #346187;
-color: #FFF;
+  background-color: #346187;
+  color: #FFF;
 }
 
 
@@ -168,11 +184,18 @@ color: #FFF;
 
 
 <script>
+  $('#alertas').hide();
   $('.table2').hide();
   url = '{% url 'catalog:busqueda_products' %}';
   csrf_token = '{{ csrf_token }}';
   $('#selectCategory').on('change', triggerCategorySelect);
+
   function triggerCategorySelect(){
+
+    // $('#example2').DataTable().search('')
+
+    // poner el select de alertas siempre cuando cargue en 'elige alartas'(en default)
+    $('#alertas option[value=""]').prop('selected', true);
     var category_id = $(this).val();
 
     $.ajax({
@@ -193,6 +216,9 @@ color: #FFF;
 
   $('#selectSubCategoria').on('change', triggerSubCategorySelect);
   function triggerSubCategorySelect(){
+    // poner el select de alertas siempre cuando cargue en 'elige alartas'(en default)
+    $('#alertas option[value=""]').prop('selected', true);
+
     var category_select = $('#selectCategory').find("option:selected");
     
     var subCategory_select = $('#selectSubCategoria').find("option:selected");
@@ -213,48 +239,64 @@ color: #FFF;
 
 
   function responseDataSuccess(data){
-        $('.table1').remove();
-        $('.table1').hide();
-        $('.table2').show();
+    // limpia todo lo que tenga el input search del datatable
+    // $('#example2').dataTable().fnFilter('');
+    // $('#example2').DataTable().search('').draw();
+    
+  
+  
+    // relaciona el select de alertas con el input search del datatable
+    $('#alertas').on('change', alertaFunction);
+    function alertaFunction(){
+      var oTable = $('.dataTable').dataTable();
+      oTable.fnFilter($(this).val());
+    }
 
-        console.log('responseDataSuccess ')
-        console.log(data)
-        var html = ""
-        category_id = data[data.length-1]
 
-        $("#selectSubCategoria option").remove();
-          for (var i = 0; i<data[data.length-1].length ; i++) {
-              $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
-          };
-        
-        data_alert = data[data.length-1]
-        cell_alert = ''
+    $('.table1').remove();
+    $('.table1').hide();
+    $('.table2').show();
+    $('#alertas').show();
 
-        for(var i = 0; i<data.length-2 ; i++){
-          if (data[i].fields.alert =='vencido') {
-            data[i].fields.alert = '!Producto vencido!'
 
-            cell_alert = '<td>'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></td>'
+    console.log('responseDataSuccess ')
+    console.log(data)
+    var html = ""
+    category_id = data[data.length-1]
 
-          }else if (data[i].fields.alert =='yellow_alert'){
-            data[i].fields.alert = '!Alerta amarilla!'
+    $("#selectSubCategoria option").remove();
+    for (var i = 0; i<data[data.length-1].length ; i++) {
+      $("#selectSubCategoria").append('<option value='+data[data.length-1][i].id+'>'+data[data.length-1][i].name +'</option>');
+    };
 
-            cell_alert = '<td style="color: #FFA100">'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></td>'
+    data_alert = data[data.length-1]
+    cell_alert = ''
 
-          }else if (data[i].fields.alert =='red_alert'){
-            data[i].fields.alert = '!Alerta roja!'
+    for(var i = 0; i<data.length-2 ; i++){
+      if (data[i].fields.alert =='vencido') {
+        data[i].fields.alert = '!Producto vencido!'
 
-            cell_alert = '<td style="color: red"> '+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></td>'
+        cell_alert = '<td>'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></td>'
 
-          }else if (data[i].fields.alert ==  null){
-            data[i].fields.alert = 'Falta tiempo para su vencimiento'
+      }else if (data[i].fields.alert =='yellow_alert'){
+        data[i].fields.alert = '!Alerta amarilla!'
 
-          }
+        cell_alert = '<td style="color: #FFA100">'+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></td>'
 
-          html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+cell_alert
-        }
-        $('#datos').html(html)
-        $('#example2').DataTable();
+      }else if (data[i].fields.alert =='red_alert'){
+        data[i].fields.alert = '!Alerta roja!'
+
+        cell_alert = '<td style="color: red"> '+data[i].fields.alert+'<div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></td>'
+
+      }else if (data[i].fields.alert ==  null){
+        data[i].fields.alert = 'Falta tiempo para su vencimiento'
+
+      }
+
+      html += '<tr><td class="hidden-xs">'+data[i].pk+'</td>'+'<td>'+data[i].fields.name+'</td>'+'<td>'+data[i].fields.category+'</td>'+'<td>'+data[i].fields.sub_category+'</td>'+'<td>'+data[i].fields.expiration_date+'</td>'+'<td>'+data[i].fields.lot+'</td>'+'<td>'+data[i].fields.units+cell_alert
+    }
+    $('#datos').html(html)
+    $('#example2').DataTable();
 
   }
   

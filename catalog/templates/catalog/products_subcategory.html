@@ -10,6 +10,13 @@
       <div class="row">
         <div style="display: flex; justify-content:space-around; align-items: center;" class="col col-xs-12">
           <p>Categoria: <b>{{subcategory.category}}</b></p>
+          <select name ="alertas" id="alertas">
+                 <option value="">Elige alertas</option>
+                 <option value="vencido">Producto vencido</option>
+                 <option value="roja">Alerta roja</option>
+                 <option value="amarilla">Alerta amarilla</option>
+                 <option value="Alerta">Alertas rojas y amarillas </option>
+               </select>
           <p>Productos de la subcategoria <b>{{subcategory.name}}</b></p>
         </div>
         
@@ -47,7 +54,7 @@
             </td>
 
             {% elif product.alert == "yellow_alert" %}
-              <td style="color: background: #FFA100">
+              <td style="color: #FFA100">
                 !Alerta amarilla!
                 <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
               </td>
@@ -96,6 +103,12 @@
 <script>
   $(document).ready(function() {
     $('#table1').DataTable();
+    // relaciona el select de alertas con el input search del datatable
+    $('#alertas').on('change', alertaFunction);
+    function alertaFunction(){
+      var oTable = $('.dataTable').dataTable();
+      oTable.fnFilter($(this).val());
+    }
 } );
 </script>
 
