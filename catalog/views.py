@@ -157,58 +157,33 @@ except ImportError:
 class busqueda_products(generic.TemplateView):
 
 	def get(self, request, *args, **kwargs):
+		category_id = request.GET.get('category_id')
+		
+		subCategory_id = request.GET.get('subCategory_id')
 
-		# pdb.set_trace()
-		if request.method == 'GET':
-			if request.GET.get('selectCategory'):
-				id_category = request.GET['category_id']
-				
-				products = Product.objects.filter(category__id=id_category)
-				category = Category.objects.get(id=id_category)
-				subcategories = category.subcategory_set.all()
-				result_set = []
+		if len(request.GET) == 1:
+			print('esta en categorias')
+			products = Product.objects.filter(category__id=category_id)
+		else:
+			print('esta en subCategory')
+			products = Product.objects.filter(category__id=category_id, sub_category__id=subCategory_id)
 
-				result_set.append({'name':'Eliga una subcategoría' ,'id':''})
+		category = Category.objects.get(id=category_id)
+		subcategories = category.subcategory_set.all()
+		data_categories = []
 
-				for subcategory in subcategories:
-					result_set.append({'name': subcategory.name,'id':subcategory.id})
+		for subcategory in subcategories:
+			if str(subcategory.id) == str(subCategory_id):
+				data_categories.append({'name': subcategory.name,'id':subcategory.id,'subcategory_id_selected': True})
+			else:
+				data_categories.append({'name': subcategory.name,'id':subcategory.id})
 
-				data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
-				data_categories = result_set
-				data1 = json.loads(data_products)
-				data1.append(data_categories)
-				data_response = json.dumps(data1)
+		data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
+		data1 = json.loads(data_products)
+		data1.append(data_categories)
+		data_response = json.dumps(data1)
 
-				return HttpResponse(data_response, content_type='application/json')
-
-			elif request.GET.get('selectSubCategory'):
-				category_id = request.GET.get('category_id')
-
-				subCategory_id = request.GET.get('subCategory_id')
-				products = Product.objects.filter(category__id=category_id, sub_category__id=subCategory_id)
-				category = Category.objects.get(id=category_id)
-				subcategories = category.subcategory_set.all()
-				result_set = []
-
-
-
-
-				for subcategory in subcategories:
-					if str(subcategory.id) == str(subCategory_id):
-						result_set.append({'name': subcategory.name,'id':subcategory.id,'subcategory_id_selected': True})
-					else:
-						result_set.append({'name': subcategory.name,'id':subcategory.id})
-
-
-
-
-				data_products = ExtJsonSerializer().serialize(products, fields=['name','category','sub_category','expiration_date','lot','units','alert'])
-				data_categories = result_set
-				data1 = json.loads(data_products)
-				data1.append(data_categories)
-				data_response = json.dumps(data1)
-
-				return HttpResponse(data_response, content_type='application/json')
+		return HttpResponse(data_response, content_type='application/json')
 
 
 from django.core.serializers.base import Serializer as BaseSerializer

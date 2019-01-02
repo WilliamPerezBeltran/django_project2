@@ -188,76 +188,67 @@
   $('.table2').hide();
   url = '{% url 'catalog:busqueda_products' %}';
   csrf_token = '{{ csrf_token }}';
-  $('#selectCategory').on('change', triggerCategorySelect);
 
-  function triggerCategorySelect(){
+  $('select').on('change', triggerSelect);
+  function triggerSelect(){
+    var alerta = $('#alertas').find("option:selected");
+    if (alerta.val()) {
+      console.log('entro a este')
+    }else{
 
-    // $('#example2').DataTable().search('')
 
-    // poner el select de alertas siempre cuando cargue en 'elige alartas'(en default)
-    $('#alertas option[value=""]').prop('selected', true);
-    var category_id = $(this).val();
+      // poner el select de alertas siempre cuando cargue en 'elige alartas'(en default)
+      $('#alertas option[value=""]').prop('selected', true);
 
-    $.ajax({
-      data:{
-        'category_id':category_id,
-        'selectCategory':true,
-      },
-      url: url,
-      type: 'get',
-      'csrfmiddlewaretoken': csrf_token,
-      success: function(data){
-        responseDataSuccess(data)
+      if ( $(this).attr('id') =='selectCategory') {
+        var category_select = $('#selectCategory').find("option:selected");
+        $.ajax({
+          data:{
+            'category_id':category_select.val(),
+          },
+          url: url,
+          type: 'get',
+          'csrfmiddlewaretoken': csrf_token,
+          success: function(data){
+            responseDataSuccess(data)
+          }
+        });
+
+      }else{
+        var category_select = $('#selectCategory').find("option:selected");
+
+        var subCategory_select = $('#selectSubCategoria').find("option:selected");
+        $.ajax({
+          data:{
+            'category_id':category_select.val(),
+            'subCategory_id':subCategory_select.val(),
+          },
+          url: url,
+          type: 'get',
+          'csrfmiddlewaretoken': csrf_token,
+          success: function(data){
+            responseDataSuccess(data)
+          }
+        });
       }
-    });
-  }
 
-
-
-  $('#selectSubCategoria').on('change', triggerSubCategorySelect);
-  function triggerSubCategorySelect(){
-    // poner el select de alertas siempre cuando cargue en 'elige alartas'(en default)
-    $('#alertas option[value=""]').prop('selected', true);
-
-    var category_select = $('#selectCategory').find("option:selected");
+    }
     
-    var subCategory_select = $('#selectSubCategoria').find("option:selected");
-    $.ajax({
-      data:{
-        'category_id':category_select.val(),
-        'subCategory_id':subCategory_select.val(),
-        'selectSubCategory':true,
-      },
-      url: url,
-      type: 'get',
-      'csrfmiddlewaretoken': csrf_token,
-      success: function(data){
-        responseDataSuccess(data)
-      }
-    });
   }
 
 
   function responseDataSuccess(data){
-    // limpia todo lo que tenga el input search del datatable
-    // $('#example2').dataTable().fnFilter('');
-    // $('#example2').DataTable().search('').draw();
-    
-  
-  
+
     // relaciona el select de alertas con el input search del datatable
     $('#alertas').on('change', alertaFunction);
     function alertaFunction(){
       var oTable = $('.dataTable').dataTable();
       oTable.fnFilter($(this).val());
     }
-
-
     $('.table1').remove();
     $('.table1').hide();
     $('.table2').show();
     $('#alertas').show();
-
 
     console.log('responseDataSuccess ')
     console.log(data)
