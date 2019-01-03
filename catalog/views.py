@@ -6,6 +6,7 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views import generic
+import openpyxl
 
 @login_required
 def index(request):
@@ -213,3 +214,86 @@ class ExtPythonSerializer(ExtBaseSerializer, PythonSerializer):
 
 class ExtJsonSerializer(ExtPythonSerializer, JsonSerializer):
     pass
+
+
+
+@login_required
+def import_data(request):
+	if "GET" == request.method:
+		return render(request, 'catalog/import_data.html', {})
+	else:
+		excel_file = request.FILES["excel_file"]
+
+		# you may put validations here to check extension or file size
+
+		wb = openpyxl.load_workbook(excel_file)
+
+		# getting a particular sheet by name out of many sheets
+		worksheet = wb["Hoja1"]
+		print(worksheet)
+
+		excel_data = list()
+		excel_dict = {
+			'name': '', 
+			'date': '', 
+			'expiration_date': '', 
+			'lot': '', 
+			'units': '', 
+			'category': '', 
+			'sub_category': '', 
+			}
+		# iterating over the rows and
+		# getting value from each cell in row
+		for row in worksheet.iter_rows():
+			row_data = list()
+			excel_dict = {
+			'name': '', 
+			'date': '', 
+			'expiration_date': '', 
+			'lot': '', 
+			'units': '', 
+			'category': '', 
+			'sub_category': '', 
+			}
+
+			for cell in row:
+				row_data.append(str(cell.value))
+
+			excel_dict['name'] = row_data[0]
+			date = row_data[1].split(' ')
+			excel_dict['date'] = date[0]
+			expiration_date = row_data[2].split(' ')
+			excel_dict['expiration_date'] = expiration_date[0]
+			excel_dict['lot'] = row_data[3]
+			excel_dict['units'] = row_data[4]
+			category_excel = Category.objects.get(name=row_data[5])
+			excel_dict['category'] = category_excel
+			sub_category_excel = SubCategory.objects.get(name=row_data[6])
+			excel_dict['sub_category'] = sub_category_excel
+
+			try:
+				Product.objects.create(name=excel_dict['name'],date =excel_dict['date'] ,expiration_date =excel_dict['expiration_date'] ,lot =excel_dict['lot'] ,units =excel_dict['units'] ,category =excel_dict['category'] ,sub_category =excel_dict['sub_category'] )
+
+			except Exception as e:
+				logging.error('Error in data')
+				logging.error(e)
+
+			
+
+
+			excel_data.append(excel_dict)
+
+			# excel_data.append(row_data)
+		# pdb.set_trace()
+
+		context = {
+        	'excel_data':excel_data,
+        	'successful_submit': True,
+        }
+		return render(request, 'catalog/import_data.html', context=context)	
+
+	
+
+	
+
+	

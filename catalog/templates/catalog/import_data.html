@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+
+<div class="container">
+  <div class="row pricing" style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;flex-direction: column;">
+    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;">Subir archivo excel</h1>
+
+    <div class="col-md-4" >
+      <div class="well" style="padding-top: 0 !important;padding-bottom: 5px !important">
+
+
+
+        <form action="{% url 'catalog:import_data' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file"
+          title="Upload excel file"
+          name="excel_file"
+          style="margin-top: 10%;border: 1px solid gray; padding: 5px;"
+          required="required">
+          <p>
+            <input type="submit"
+            value="Cargar archivo"
+            class="btn btn-primary btn"
+            style="margin-top: 10%; padding:5px; border-radius: 5%; cursor: pointer;">
+          </form>
+
+          <p></p>
+          <hr>
+
+
+          {% for row in excel_data %}
+            {% for cell in row %}
+              {{ cell }}&nbsp;&nbsp;
+            {% endfor %}
+          <br>
+          {% endfor %}
+
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+   {% endblock %}

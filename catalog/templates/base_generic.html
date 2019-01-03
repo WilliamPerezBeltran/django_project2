@@ -29,7 +29,9 @@
                   <li><a>User: {{ user.get_username }}</a></li>   
                   <li ><a href="{% url 'catalog:index' %}">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                   <!-- <li ><a href="{% url 'catalog:products' %}">Productos<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li> -->
+                  <li ><a href="{% url 'catalog:import_data' %}">Importar excel<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-import"></span></a></li>
                   {% if user.is_authenticated %}
+                  <!-- trigger Modal -->
                   <li><a data-toggle="modal" data-target="#exampleModal">Logout</a></li>   
                    <!-- Modal -->
                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
