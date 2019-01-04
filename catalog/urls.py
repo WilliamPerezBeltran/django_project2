@@ -9,6 +9,7 @@ urlpatterns = [
 	path('product/<int:product_id>',views.product_detalle,name='product_detalle'),
 	path('products',views.products,name='products'),
 	path('busqueda_ajax',views.busqueda_products.as_view(),name='busqueda_products'),
+	path('get_import_data',views.get_import_data.as_view(),name='get_import_data'),
 	path('import_data',views.import_data,name='import_data'),
 
 ]

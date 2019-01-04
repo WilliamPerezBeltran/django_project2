@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+
+
 {% block content %}
 
 
@@ -14,44 +16,123 @@
 
 
 
-        <form action="{% url 'catalog:import_data' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'catalog:get_import_data'%}" method="post" id="file-upload-form" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="file"
-          title="Upload excel file"
-          name="excel_file"
-          style="margin-top: 10%;border: 1px solid gray; padding: 5px;"
-          required="required">
-          <p>
-            <input type="submit"
+
+          <div style="display:flex; flex-direction: column; justify-content: center;align-items: center;">
+            <input type="file"
+            title="Upload excel file"
+            name="excel_file"
+            style="margin-top: 10%;border: 1px solid gray; padding: 5px;"
+            required="required">
+
+            <input id='upload-btn' type="submit"
             value="Cargar archivo"
             class="btn btn-primary btn"
             style="margin-top: 10%; padding:5px; border-radius: 5%; cursor: pointer;">
-          </form>
 
-          <p></p>
-          <hr>
-
-
-          {% for row in excel_data %}
-            {% for cell in row %}
-              {{ cell }}&nbsp;&nbsp;
-            {% endfor %}
-          <br>
-          {% endfor %}
+          </div>
+        </form>
 
 
+        <!-- Button trigger modal -->
+        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          Launch demo modal
+        </button> -->
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div style="background:#00D4A3"  class="modal-header bg-success">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                  <div style="display: flex;justify-content: center;align-items: center; width: 100px; height: 100px; border:2px solid white; border-radius: 50%;">
+                    <li style="font-size: 50px; color: white" class="glyphicon glyphicon-ok"></li>
 
+                  </div>
 
+                </div>
+              </div>
+              <div class="modal-body ">
+                <h4 style="text-align: center;" class="modal-title" id="myModalLabel">Exito</h4>
+                <p  style="text-align: center; "class="" id="">Los datos han sido guardados en la base de datos </p>
 
+              </div>
+              <div class="modal-footer">
+                <div style="display: flex; justify-content: center;align-items: center;">
+                  <button style="background: #EDC700; color: white" type="button" class="btn btn-lg" data-dismiss="modal"> Salir </button>
 
+                </div>
 
+              </div>
+            </div>
+          </div>
         </div>
+
+
+
+
+
+
+
+
+
+
       </div>
     </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+
+      url = '{% url 'catalog:get_import_data' %}';
+      csrf_token = '{{ csrf_token }}';
+
+
+
+
+      function upload(event) {
+        event.preventDefault();
+        var data = new FormData($('form').get(0));
+        console.log(data)
+
+        $.ajax({
+            // url: $(this).attr('action'),
+            url:url,
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            'csrfmiddlewaretoken': csrf_token,
+            success: function(data) {
+             $('#myModal').modal('show'); 
+           },
+           error:function(data){
+            console.log('error')
+            console.log(data)
+
+          },
+        });
+        return false;
+      }
+
+      $(function() {
+        $('form').submit(upload);
+      });
 
 
 
 
 
 
-   {% endblock %}
+    })
+  </script>
+
+
+
+
+
+
+  {% endblock %}

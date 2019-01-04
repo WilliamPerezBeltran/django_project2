@@ -219,9 +219,21 @@ class ExtJsonSerializer(ExtPythonSerializer, JsonSerializer):
 
 @login_required
 def import_data(request):
-	if "GET" == request.method:
-		return render(request, 'catalog/import_data.html', {})
-	else:
+
+	context = {
+	}
+	return render(request, 'catalog/import_data.html', context=context)	
+
+
+class get_import_data(generic.TemplateView):
+	def post(self, request, *args, **kwargs):
+		# pdb.set_trace()
+
+		print('ole we are in ')
+		print('ole we are in ')
+		print('ole we are in ')
+		print('ole we are in ')
+		print('ole we are in ')
 		excel_file = request.FILES["excel_file"]
 
 		# you may put validations here to check extension or file size
@@ -278,19 +290,15 @@ def import_data(request):
 				logging.error('Error in data')
 				logging.error(e)
 
-			
-
-
 			excel_data.append(excel_dict)
+		variable=34
+		return HttpResponse(variable, content_type='application/json')
 
-			# excel_data.append(row_data)
-		# pdb.set_trace()
 
-		context = {
-        	'excel_data':excel_data,
-        	'successful_submit': True,
-        }
-		return render(request, 'catalog/import_data.html', context=context)	
+		
+
+
+		
 
 	
 
