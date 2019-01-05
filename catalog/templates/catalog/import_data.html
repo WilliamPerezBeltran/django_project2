@@ -64,6 +64,34 @@
           </div>
         </div>
 
+        <!-- alerta Modal (error in data excel) -->
+        <div class="modal fade" id="modalAlertaDataExcel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div style="background:red"  class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                  <div style="display: flex;justify-content: center;align-items: center; width: 100px; height: 100px; border:2px solid white; border-radius: 50%;">
+                    <li style="font-size: 50px; color: white" class="glyphicon glyphicon-remove"></li>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body ">
+                <h4 style="text-align: center;" class="modal-title" id="myModalLabel">Error</h4>
+                <p  style="text-align: center; "class="" id="">Hay datos que no coinciden en la base de datos por favor revise las categorías de los datos ingresados </p>
+              </div>
+              <div class="modal-footer">
+                <div style="display: flex; justify-content: center;align-items: center;">
+                  <button style="background: #EDC700; color: white" type="button" class="btn btn-lg" data-dismiss="modal"> Salir </button>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- loading Modal -->
         <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document" style="display: flex;justify-content: center;align-items: center;">
@@ -166,7 +194,15 @@
             contentType: false,
             'csrfmiddlewaretoken': csrf_token,
             success: function(data) {
-             $('#myModal').modal('show'); 
+              console.log('data success')
+              console.log(data)
+              if (data['modal'] == 'success') {
+                $('#myModal').modal('show'); 
+              }else{
+                $('#modalAlertaDataExcel').modal('show'); 
+                
+              }
+             
            },
            error:function(data){
             console.log('error')

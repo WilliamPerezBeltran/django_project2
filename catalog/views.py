@@ -11,7 +11,6 @@ import openpyxl
 @login_required
 def index(request):
 	num_category = Category.objects.all()
-	# pdb.set_trace()
 
 	now = datetime.datetime.now()
 	num_products = Product.objects.all()
@@ -19,7 +18,6 @@ def index(request):
 	num_products_red_alert = {}
 	num_products_yellow_alert = {}
 	num_expired_products = {}
-	# pdb.set_trace()
 
 	# Lógica para encontrar los productos vencidos alertas ojas y alertas amarillas
 	for category in num_category:
@@ -28,12 +26,10 @@ def index(request):
 		contador_products_red_alert = 0
 		contador_products_yellow_alert = 0
 		contador_expired_products = 0
-
 		for subcategory in subcategories:
 			products = subcategory.product_set.all()
 
 			for product in products:
-				# pdb.set_trace()
 				if product.alert == product.RED_ALERT:
 					contador_products_red_alert += 1
 				elif product.alert == product.YELLOW_ALERT:
@@ -55,7 +51,6 @@ def index(request):
 			subcategory_products_num += subcategory.product_set.count()
 
 		num_products_by_category[category.id] = subcategory_products_num
-	
 	context = {
 		'num_products_red_alert': num_products_red_alert,
 		'num_products_yellow_alert': num_products_yellow_alert,
@@ -65,16 +60,15 @@ def index(request):
 		'num_category': num_category,
 		'num_products': num_products,
 	}
-
 	return render(request, 'index.html', context=context)
 
 @login_required
 def subcategories(request, category_id):
 	category = Category.objects.get(pk=category_id)
+
 	num_products_red_alert = {}
 	num_products_yellow_alert = {}
 	num_expired_products = {}
-
 	for subcategory in category.subcategory_set.all():
 		contador_products_red_alert = 0
 		contador_products_yellow_alert = 0
@@ -98,49 +92,41 @@ def subcategories(request, category_id):
 		'num_expired_products': num_expired_products,
 		'category': category,
 	}
-
 	return render(request, 'catalog/subcategories.html', context=context)
 
 @login_required
 def products_subcategory(request, sub_category_id):
 	subcategory = SubCategory.objects.get(pk=sub_category_id)
+
 	subcategory_all_products=subcategory.product_set.all()
-
-	
-
 	context = {
 		'subcategory_all_products': subcategory_all_products,
 		'subcategory': subcategory,
 	}
-
 	return render(request, 'catalog/products_subcategory.html', context=context)
 
 @login_required
 def product_detalle(request, product_id):
 	product = Product.objects.get(pk=product_id)
+
 	context = {
 		'product': product,
 	}
-
 	return render(request, 'catalog/product_detalle.html', context=context)
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 def products(request):
-
 	categories = Category.objects.all()
-	all_products = Product.objects.all().order_by('-expiration_date')
-	# pdb.set_trace()
 
+	all_products = Product.objects.all().order_by('-expiration_date')
 	try:
 		page = request.GET.get('page', 1)
 	except PageNotAnInteger:
 		page = 1
-
 	# Provide Paginator with the request object for complete querystring generation
 	p = Paginator(all_products, 10)
 	products = p.page(page)
-
 	context = {
 		'products': products,
 		'categories': categories,
@@ -148,20 +134,16 @@ def products(request):
 	}
 	return render(request, 'catalog/products.html', context=context)
 
-
-
 from django.http import HttpResponse
 try:
     import simplejson as json
 except ImportError:
     import json
 class busqueda_products(generic.TemplateView):
-
 	def get(self, request, *args, **kwargs):
 		category_id = request.GET.get('category_id')
 		
 		subCategory_id = request.GET.get('subCategory_id')
-
 		if len(request.GET) == 1:
 			print('esta en categorias')
 			products = Product.objects.filter(category__id=category_id)
@@ -183,14 +165,11 @@ class busqueda_products(generic.TemplateView):
 		data1 = json.loads(data_products)
 		data1.append(data_categories)
 		data_response = json.dumps(data1)
-
 		return HttpResponse(data_response, content_type='application/json')
-
 
 from django.core.serializers.base import Serializer as BaseSerializer
 from django.core.serializers.python import Serializer as PythonSerializer
 from django.core.serializers.json import Serializer as JsonSerializer
-
 class ExtBaseSerializer(BaseSerializer):
 
     def serialize_property(self, obj):
@@ -207,15 +186,11 @@ class ExtBaseSerializer(BaseSerializer):
 
         super(ExtBaseSerializer, self).end_object(obj)
 
-
 class ExtPythonSerializer(ExtBaseSerializer, PythonSerializer):
     pass
 
-
 class ExtJsonSerializer(ExtPythonSerializer, JsonSerializer):
     pass
-
-
 
 @login_required
 def import_data(request):
@@ -224,23 +199,29 @@ def import_data(request):
 	}
 	return render(request, 'catalog/import_data.html', context=context)	
 
-
+try:
+    import simplejson as json
+except ImportError:
+    import json
 class get_import_data(generic.TemplateView):
 	def post(self, request, *args, **kwargs):
+		response_data = {'modal': 'success'};
 
-
-
+		categories = Category.objects.all()
+		sub_categories = SubCategory.objects.all()
+		all_categories = list()
+		all_sub_categories = list()
+		for category in categories:
+			all_categories.append(category.name)
+		for sub_category in sub_categories:
+			all_sub_categories.append(sub_category.name)
 		
 		excel_file = request.FILES["excel_file"]
-
 		# you may put validations here to check extension or file size
-
 		wb = openpyxl.load_workbook(excel_file)
-
 		# getting a particular sheet by name out of many sheets
 		worksheet = wb["Hoja1"]
 		print(worksheet)
-
 		excel_data = list()
 		excel_dict = {
 			'name': '', 
@@ -251,8 +232,6 @@ class get_import_data(generic.TemplateView):
 			'category': '', 
 			'sub_category': '', 
 			}
-
-
 		# iterating over the rows and
 		# getting value from each cell in row
 		for row in worksheet.iter_rows():
@@ -277,21 +256,51 @@ class get_import_data(generic.TemplateView):
 			excel_dict['expiration_date'] = expiration_date[0]
 			excel_dict['lot'] = row_data[3]
 			excel_dict['units'] = row_data[4]
-			category_excel = Category.objects.get(name=row_data[5])
-			excel_dict['category'] = category_excel
-			sub_category_excel = SubCategory.objects.get(name=row_data[6])
-			excel_dict['sub_category'] = sub_category_excel
+			# valido que la categoria ingresada en el excel exista en la base de datos 
+			if row_data[5] in all_categories:
+				category_excel = Category.objects.get(name=row_data[5])
+				excel_dict['category'] = category_excel
+				print('fue verdadero ')
+				print(row_data[5])
+				print('fue verdadero ')
+				print(row_data[5])
+			else:
+				response_data = {
+					'modal': 'error',
+					'data_error': row_data[5],
+					'error_in': 'categorías',
+					};
+				data_response = json.dumps(response_data)
+				return HttpResponse(data_response, content_type='application/json')
 
+			# valido que la subcategoria ingresada en el excel exista en la base de datos 
+			if row_data[6] in all_sub_categories:
+				sub_category_excel = SubCategory.objects.get(name=row_data[6])
+				excel_dict['sub_category'] = sub_category_excel
+				print('fue verdadero ')
+				print(row_data[6])
+				print('fue verdadero ')
+				print(row_data[6])
+			else:
+				response_data = {'modal': 'data error in excel '};
+				response_data = {
+					'modal': 'error',
+					'data_error': row_data[6],
+					'error_in': 'subcategorias',
+					};
+				data_response = json.dumps(response_data)
+				return HttpResponse(data_response, content_type='application/json')
+				break
 			try:
 				Product.objects.create(name=excel_dict['name'],date =excel_dict['date'] ,expiration_date =excel_dict['expiration_date'] ,lot =excel_dict['lot'] ,units =excel_dict['units'] ,category =excel_dict['category'] ,sub_category =excel_dict['sub_category'] )
-
 			except Exception as e:
 				logging.error('Error in data')
 				logging.error(e)
 
 			excel_data.append(excel_dict)
-		variable=34
-		return HttpResponse(variable, content_type='application/json')
+		# data1 = json.loads(response_data)
+		data_response = json.dumps(response_data)
+		return HttpResponse(data_response, content_type='application/json')
 
 
 		
@@ -303,4 +312,3 @@ class get_import_data(generic.TemplateView):
 
 	
 
-	
