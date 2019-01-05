@@ -227,13 +227,10 @@ def import_data(request):
 
 class get_import_data(generic.TemplateView):
 	def post(self, request, *args, **kwargs):
-		# pdb.set_trace()
 
-		print('ole we are in ')
-		print('ole we are in ')
-		print('ole we are in ')
-		print('ole we are in ')
-		print('ole we are in ')
+
+
+		
 		excel_file = request.FILES["excel_file"]
 
 		# you may put validations here to check extension or file size
@@ -254,6 +251,8 @@ class get_import_data(generic.TemplateView):
 			'category': '', 
 			'sub_category': '', 
 			}
+
+
 		# iterating over the rows and
 		# getting value from each cell in row
 		for row in worksheet.iter_rows():
