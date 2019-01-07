@@ -211,8 +211,11 @@ class get_import_data(generic.TemplateView):
 		sub_categories = SubCategory.objects.all()
 		all_categories = list()
 		all_sub_categories = list()
+		list_data_excel = list()
+
 		for category in categories:
 			all_categories.append(category.name)
+
 		for sub_category in sub_categories:
 			all_sub_categories.append(sub_category.name)
 		
@@ -221,34 +224,17 @@ class get_import_data(generic.TemplateView):
 		wb = openpyxl.load_workbook(excel_file)
 		# getting a particular sheet by name out of many sheets
 		worksheet = wb["Hoja1"]
-		print(worksheet)
-		excel_data = list()
-		excel_dict = {
-			'name': '', 
-			'date': '', 
-			'expiration_date': '', 
-			'lot': '', 
-			'units': '', 
-			'category': '', 
-			'sub_category': '', 
-			}
+		
 		# iterating over the rows and
 		# getting value from each cell in row
 		for row in worksheet.iter_rows():
 			row_data = list()
-			excel_dict = {
-			'name': '', 
-			'date': '', 
-			'expiration_date': '', 
-			'lot': '', 
-			'units': '', 
-			'category': '', 
-			'sub_category': '', 
-			}
+			excel_dict = {}
 
 			for cell in row:
 				row_data.append(str(cell.value))
 
+			excel_dict['row'] = cell.row
 			excel_dict['name'] = row_data[0]
 			date = row_data[1].split(' ')
 			excel_dict['date'] = date[0]
@@ -256,53 +242,69 @@ class get_import_data(generic.TemplateView):
 			excel_dict['expiration_date'] = expiration_date[0]
 			excel_dict['lot'] = row_data[3]
 			excel_dict['units'] = row_data[4]
-			# valido que la categoria ingresada en el excel exista en la base de datos 
+			# valida que la categoría ingresada en el excel exista en la base de datos 
 			if row_data[5] in all_categories:
 				category_excel = Category.objects.get(name=row_data[5])
 				excel_dict['category'] = category_excel
-				print('fue verdadero ')
-				print(row_data[5])
-				print('fue verdadero ')
-				print(row_data[5])
+				excel_dict['check_category_exist'] = True
 			else:
-				response_data = {
-					'modal': 'error',
-					'data_error': row_data[5],
-					'error_in': 'categorías',
-					};
-				data_response = json.dumps(response_data)
-				return HttpResponse(data_response, content_type='application/json')
+				excel_dict['check_category_exist'] = False
 
-			# valido que la subcategoria ingresada en el excel exista en la base de datos 
+			# valida que la subcategoria ingresada en el excel exista en la base de datos 
 			if row_data[6] in all_sub_categories:
 				sub_category_excel = SubCategory.objects.get(name=row_data[6])
 				excel_dict['sub_category'] = sub_category_excel
-				print('fue verdadero ')
-				print(row_data[6])
-				print('fue verdadero ')
-				print(row_data[6])
+				excel_dict['check_subcategory_exist'] = True
 			else:
-				response_data = {'modal': 'data error in excel '};
-				response_data = {
+				excel_dict['check_subcategory_exist'] = False
+
+			list_data_excel.append(excel_dict)
+
+		# reviso si hay un check_category_exist con valor false o un check_subcategory_exist
+		# con valor false para determinar si hay algun valor inconsistente en la hoja excel 
+		# que se esta importando 
+		check_data = list()
+		bad_rows = list()
+		for data_excel in list_data_excel:
+			if data_excel['check_category_exist'] and data_excel['check_subcategory_exist']:
+				check_to_send_to_data_base = True
+				check_data.append(check_to_send_to_data_base)
+			else:
+				bad_rows.append(data_excel['row'])
+				check_to_send_to_data_base = False
+				check_data.append(check_to_send_to_data_base)
+
+		# pdb.set_trace()
+
+		if False in check_data:
+			print('entro en false ')
+			print('entro en false ')
+			print('entro en false ')
+			print('entro en false ')
+			print('entro en false ')
+			response_data = {
 					'modal': 'error',
-					'data_error': row_data[6],
-					'error_in': 'subcategorias',
+					'bad_rows': bad_rows
 					};
-				data_response = json.dumps(response_data)
-				return HttpResponse(data_response, content_type='application/json')
-				break
-			try:
-				Product.objects.create(name=excel_dict['name'],date =excel_dict['date'] ,expiration_date =excel_dict['expiration_date'] ,lot =excel_dict['lot'] ,units =excel_dict['units'] ,category =excel_dict['category'] ,sub_category =excel_dict['sub_category'] )
-			except Exception as e:
-				logging.error('Error in data')
-				logging.error(e)
 
-			excel_data.append(excel_dict)
-		# data1 = json.loads(response_data)
-		data_response = json.dumps(response_data)
-		return HttpResponse(data_response, content_type='application/json')
+			data_response = json.dumps(response_data)
+			return HttpResponse(json.dumps(response_data), content_type='application/json')
+		else:
+			print('entro en true ')
+			print('entro en true ')
+			print('entro en true ')
+			print('entro en true ')
+			print('entro en true ')
+			for data_excel in list_data_excel:
+				try:
+					Product.objects.create(name= data_excel['name'],date = data_excel['date'] ,expiration_date = data_excel['expiration_date'] ,lot = data_excel['lot'] ,units = data_excel['units'] ,category = data_excel['category'] ,sub_category = data_excel['sub_category'] )
+				except Exception as e:
+					logging.error('Error in data')
+					logging.error(e)
+			data_response = json.dumps(response_data)
+			return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-
+		
 		
 
 

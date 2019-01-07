@@ -78,7 +78,8 @@
               </div>
               <div class="modal-body ">
                 <h4 style="text-align: center;" class="modal-title" id="myModalLabel">Error</h4>
-                <p  style="text-align: center; "class="" id="">Hay datos que no coinciden en la base de datos por favor revise las categorías de los datos ingresados </p>
+                <p  style="text-align: center; "class="" id="">Hay datos que no coinciden en la base de datos, por favor revise las categorías o las subcategorías en las filas <span id="datos"></span> del archivo excel </p>
+
               </div>
               <div class="modal-footer">
                 <div style="display: flex; justify-content: center;align-items: center;">
@@ -95,8 +96,8 @@
         <!-- loading Modal -->
         <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document" style="display: flex;justify-content: center;align-items: center;">
-            <!-- 1 -->
-            <div class="loader loader--style1" title="0">
+            <div class="loader">Loading...</div>
+            <!-- <div class="loader loader--style1" title="0">
               <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="100px" height="100px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
               <path opacity="0.2" fill="#00D4A3" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
@@ -113,7 +114,7 @@
               repeatCount="indefinite"/>
             </path>
           </svg>
-        </div>
+        </div> -->
 
         <!-- 2 -->
         <!-- <div class="loader loader--style2" title="1">
@@ -155,24 +156,89 @@
 </div>
 </div>
 </div>
+<style>
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+.loader {
+  color: #ffffff;
+  font-size: 10px;
+  margin: 80px auto;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+.loader:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 3.5em;
+}
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+
+</style>
 
 
 <script>
   $(document).ready(function(){
 
 
-    var $loading = $('#loading').hide();
+    // var $loading = $('#loading').hide();
+    var $loading = $('#loading');
      //Attach the event handler to any element
+
      $(document)
      .ajaxStart(function () {
+      console.log('entro a ajaxStart')
           //ajax request went so show the loading image
-          // $loading.show();
           $loading.modal('show'); 
         })
      .ajaxStop(function () {
+      console.log('entro a ajaxStop ')
          //got response so hide the loading image
          $loading.hide();
        });
+
+     
 
      url = '{% url 'catalog:get_import_data' %}';
      csrf_token = '{{ csrf_token }}';
@@ -186,30 +252,44 @@
       console.log(data)
 
       $.ajax({
-            url:url,
-            type: $(this).attr('method'),
-            data: data,
-            cache: false,
-            processData: false,
-            contentType: false,
-            'csrfmiddlewaretoken': csrf_token,
-            success: function(data) {
-              console.log('data success')
-              console.log(data)
-              if (data['modal'] == 'success') {
-                $('#myModal').modal('show'); 
-              }else{
-                $('#modalAlertaDataExcel').modal('show'); 
-                
-              }
-             
-           },
-           error:function(data){
-            console.log('error')
-            console.log(data)
+        url:url,
+        type: $(this).attr('method'),
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        'csrfmiddlewaretoken': csrf_token,
+        success: function(data) {
+          console.log('data success')
+          console.log(data)
+          if (data['modal'] == 'success') {
+            $('#myModal').modal('show'); 
+          }else{
 
-          },
-        });
+            var html = ''
+            
+            
+            var miArray = data['bad_rows'];
+            miArray.forEach( function(valor, indice, array) {
+             if (indice === (miArray.length -1)) {
+                        // This is the last one.
+                        html += valor
+                      }else{
+                       html += valor+','
+                     }
+                   });
+            $('#datos').html(html)
+            
+            $('#modalAlertaDataExcel').modal('show'); 
+          }
+          
+        },
+        error:function(data){
+          console.log('error')
+          console.log(data)
+
+        },
+      });
       return false;
     }
 
@@ -217,7 +297,7 @@
       $('form').submit(upload);
     });
 
-})
+  })
 </script>
 
 
