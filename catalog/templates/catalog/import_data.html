@@ -1,38 +1,26 @@
 {% extends "base_generic.html" %}
 
-
-
 {% block content %}
-
-
-
-
 <div class="container">
-  <div class="row pricing" style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;flex-direction: column;">
-    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;">Subir archivo excel</h1>
-
+  <div class="row pricing row_import_data">
+    <h1 class="title_import_data">Subir archivo excel</h1>
     <div class="col-md-4" >
-      <div class="well" style="padding-top: 0 !important;padding-bottom: 5px !important">
-
+      <div class="well well_import_data">
         <form action="{% url 'catalog:get_import_data'%}" method="post" id="file-upload-form" enctype="multipart/form-data">
           {% csrf_token %}
-
-          <div style="display:flex; flex-direction: column; justify-content: center;align-items: center;">
+          <div class="container_form_import_data">
             <input type="file"
             title="Upload excel file"
             name="excel_file"
-            style="margin-top: 10%;border: 1px solid gray; padding: 5px;"
+            class="boton_seleccionar" 
             required="required">
 
             <input id='upload-btn' type="submit"
             value="Cargar archivo"
-            class="btn btn-primary btn"
-            style="margin-top: 10%; padding:5px; border-radius: 5%; cursor: pointer;">
+            class="boton_cargar btn btn-primary btn ">
 
           </div>
         </form>
-
-
         <!-- Button trigger modal -->
         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
           Launch demo modal
@@ -41,191 +29,81 @@
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div style="background:#00D4A3"  class="modal-header bg-success">
+              <div class=" modal_exito modal-header bg-success">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                  <div style="display: flex;justify-content: center;align-items: center; width: 100px; height: 100px; border:2px solid white; border-radius: 50%;">
-                    <li style="font-size: 50px; color: white" class="glyphicon glyphicon-ok"></li>
+                <div class="center_circle">
+                  <div class="circle_modal">
+                    <li  class="glyphicon glyphicon-ok"></li>
                   </div>
                 </div>
               </div>
-              <div class="modal-body ">
-                <h4 style="text-align: center;" class="modal-title" id="myModalLabel">Exito</h4>
-                <p  style="text-align: center; "class="" id="">Los datos han sido guardados en la base de datos </p>
+              <div class="modal-body text_center_modal">
+                <h4 class="modal-title" id="myModalLabel">Exito</h4>
+                <p>Los datos han sido guardados en la base de datos exitosamente</p>
               </div>
               <div class="modal-footer">
-                <div style="display: flex; justify-content: center;align-items: center;">
-                  <button style="background: #EDC700; color: white" type="button" class="btn btn-lg" data-dismiss="modal"> Salir </button>
-
+                <div class="container_exito_boton">
+                  <button type="button" class="boton_salir_color btn btn-lg" data-dismiss="modal"> Salir </button>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-
         <!-- alerta Modal (error in data excel) -->
         <div class="modal fade" id="modalAlertaDataExcel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div style="background:red"  class="modal-header">
+              <div class="alerta_error_modal modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div style="display: flex;justify-content: center;align-items: center;">
-                  <div style="display: flex;justify-content: center;align-items: center; width: 100px; height: 100px; border:2px solid white; border-radius: 50%;">
-                    <li style="font-size: 50px; color: white" class="glyphicon glyphicon-remove"></li>
+                <div class="center_circle">
+                  <div class="circle_modal">
+                    <li class="glyphicon glyphicon-remove"></li>
                   </div>
                 </div>
               </div>
-              <div class="modal-body ">
-                <h4 style="text-align: center;" class="modal-title" id="myModalLabel">Error</h4>
-                <p  style="text-align: center; "class="" id="">Hay datos que no coinciden en la base de datos, por favor revise las categorías o las subcategorías en las filas <span id="datos"></span> del archivo excel </p>
-
+              <div class="modal-body text_center_modal">
+                <h4  class="modal-title" id="myModalLabel">Error</h4>
+                <p  class="" id="">Hay datos que no coinciden en la base de datos, por favor revise las categorías o las subcategorías en las filas <span id="datos"></span> del archivo excel </p>
               </div>
               <div class="modal-footer">
-                <div style="display: flex; justify-content: center;align-items: center;">
-                  <button style="background: #EDC700; color: white" type="button" class="btn btn-lg" data-dismiss="modal"> Salir </button>
-
+                <div class="boton_salir" >
+                  <button  type="button" class="boton_salir_color btn btn-lg" data-dismiss="modal"> Salir </button>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-
-
-        <!-- loading Modal -->
+        <!-- loading ciruclar svg Modal -->
         <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document" style="display: flex;justify-content: center;align-items: center;">
-            <div class="loader">Loading...</div>
-            <!-- <div class="loader loader--style1" title="0">
-              <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              width="100px" height="100px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
-              <path opacity="0.2" fill="#00D4A3" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
-              s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
-              c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
-              <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
-              C22.32,8.481,24.301,9.057,26.013,10.047z">
-              <animateTransform attributeType="xml"
-              attributeName="transform"
-              type="rotate"
-              from="0 20 20"
-              to="360 20 20"
-              dur="0.5s"
-              repeatCount="indefinite"/>
-            </path>
-          </svg>
-        </div> -->
-
-        <!-- 2 -->
-        <!-- <div class="loader loader--style2" title="1">
-          <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-          width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-            <animateTransform attributeType="xml"
-            attributeName="transform"
-            type="rotate"
-            from="0 25 25"
-            to="360 25 25"
-            dur="0.6s"
-            repeatCount="indefinite"/>
-          </path>
-        </svg>
-      </div> -->
-
-      <!-- 3  -->
-      <!-- <div class="loader loader--style3" title="2">
-        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-        <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-          <animateTransform attributeType="xml"
-          attributeName="transform"
-          type="rotate"
-          from="0 25 25"
-          to="360 25 25"
-          dur="0.6s"
-          repeatCount="indefinite"/>
-        </path>
-      </svg>
-    </div> -->
-
-
+          <div class="center_svg modal-dialog " role="document" >
+            <div class="loading">Loading</div>
+            <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)" stroke-width="2">
+                  <circle stroke-opacity=".5" cx="18" cy="18" r="18"/>
+                  <path d="M36 18c0-9.94-8.06-18-18-18">
+                    <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 18 18"
+                    to="360 18 18"
+                    dur="1s"
+                    repeatCount="indefinite"/>
+                  </path>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-
-</div>
-</div>
-</div>
-<style>
-.loader,
-.loader:before,
-.loader:after {
-  border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation: load7 1.8s infinite ease-in-out;
-  animation: load7 1.8s infinite ease-in-out;
-}
-.loader {
-  color: #ffffff;
-  font-size: 10px;
-  margin: 80px auto;
-  position: relative;
-  text-indent: -9999em;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-}
-.loader:before,
-.loader:after {
-  content: '';
-  position: absolute;
-  top: 0;
-}
-.loader:before {
-  left: -3.5em;
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-.loader:after {
-  left: 3.5em;
-}
-@-webkit-keyframes load7 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 2.5em 0 -1.3em;
-  }
-  40% {
-    box-shadow: 0 2.5em 0 0;
-  }
-}
-@keyframes load7 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 2.5em 0 -1.3em;
-  }
-  40% {
-    box-shadow: 0 2.5em 0 0;
-  }
-}
-
-</style>
-
-
-<script>
-  $(document).ready(function(){
-
-
+  <script>
+    $(document).ready(function(){
     // var $loading = $('#loading').hide();
     var $loading = $('#loading');
      //Attach the event handler to any element
-
      $(document)
      .ajaxStart(function () {
       console.log('entro a ajaxStart')
@@ -235,16 +113,12 @@
      .ajaxStop(function () {
       console.log('entro a ajaxStop ')
          //got response so hide the loading image
-         $loading.hide();
+          $loading.modal('hide'); 
+         // $loading.hide();
        });
-
-     
 
      url = '{% url 'catalog:get_import_data' %}';
      csrf_token = '{{ csrf_token }}';
-
-
-
 
      function upload(event) {
       event.preventDefault();
@@ -265,29 +139,25 @@
           if (data['modal'] == 'success') {
             $('#myModal').modal('show'); 
           }else{
-
             var html = ''
-            
-            
             var miArray = data['bad_rows'];
+
             miArray.forEach( function(valor, indice, array) {
              if (indice === (miArray.length -1)) {
-                        // This is the last one.
-                        html += valor
-                      }else{
-                       html += valor+','
-                     }
-                   });
+                // This is the last one.
+                  html += valor
+               }else{
+                   html += valor+','
+                 }
+            });
+
             $('#datos').html(html)
-            
             $('#modalAlertaDataExcel').modal('show'); 
           }
-          
         },
         error:function(data){
           console.log('error')
           console.log(data)
-
         },
       });
       return false;

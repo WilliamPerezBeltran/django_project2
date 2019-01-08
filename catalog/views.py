@@ -277,11 +277,6 @@ class get_import_data(generic.TemplateView):
 		# pdb.set_trace()
 
 		if False in check_data:
-			print('entro en false ')
-			print('entro en false ')
-			print('entro en false ')
-			print('entro en false ')
-			print('entro en false ')
 			response_data = {
 					'modal': 'error',
 					'bad_rows': bad_rows
@@ -290,11 +285,6 @@ class get_import_data(generic.TemplateView):
 			data_response = json.dumps(response_data)
 			return HttpResponse(json.dumps(response_data), content_type='application/json')
 		else:
-			print('entro en true ')
-			print('entro en true ')
-			print('entro en true ')
-			print('entro en true ')
-			print('entro en true ')
 			for data_excel in list_data_excel:
 				try:
 					Product.objects.create(name= data_excel['name'],date = data_excel['date'] ,expiration_date = data_excel['expiration_date'] ,lot = data_excel['lot'] ,units = data_excel['units'] ,category = data_excel['category'] ,sub_category = data_excel['sub_category'] )

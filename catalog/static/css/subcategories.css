@@ -1,0 +1,22 @@
+.title{
+	display: flex; justify-content: center;align-items: center;margin-bottom: 5%;
+}
+.subcategories_second_title{
+	margin-bottom: 3%;
+	margin-left: 1.5%;
+}
+.linea_separated{
+	margin-top: 1px !important; 
+	margin-bottom: 1px !important
+}
+.alerta_roja{
+	color:red
+
+}
+.alerta_amarilla{
+	color: #FFA100
+}
+.well_class{
+	padding-top: 0 !important;
+	padding-bottom: 5px !important
+}

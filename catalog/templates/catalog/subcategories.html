@@ -1,36 +1,33 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
 <div class="container">
   <div class="row pricing">
-    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 5%;">Subcategorias </h1>
-    <h3 style=" margin-bottom: 3%;margin-left: 1.5%;">Categoria:  {{category.name}} </h3>
+    <h1 class="title" style=" ">Subcategorías </h1>
+    <h3 class="subcategories_second_title" >Categoría:  {{category.name}} </h3>
     {% for subcategory in category.subcategory_set.all %}
 
         <div class="col-md-3">
-          <div class="well">
+          <div class="well well_class">
             <h3><b>{{ subcategory.name }}</b></h3>
             <p><b>Productos:</b>  {{subcategory.product_set.all.count}} </p>
-            <hr>
-            <a href="{% url 'catalog:products_subcategory' subcategory.id %}" class="btn btn-primary btn-block">Ver Productos </a>
-            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            <hr class="linea_separated">
             {% for subcategori_id, num_products_red_alert in num_products_red_alert.items %}
               {% if subcategory.id == subcategori_id %}
                 <p>
-                  <b style="color:red">Alertas rojas:</b> {{num_products_red_alert}}
+                  <b class="alerta_roja" style="">Alertas rojas:</b> {{num_products_red_alert}}
                 </p>
               {% endif %}
             {% endfor %}
-            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            <hr class="linea_separated">
             {% for subcategori_id, num_products_yellow_alert in num_products_yellow_alert.items %}
               {% if subcategory.id == subcategori_id %}
                 <p>
-                   <b style="color: #FFA100">Alertas amarillas:</b> {{num_products_yellow_alert}}
+                   <b class="alerta_amarilla" style="">Alertas amarillas:</b> {{num_products_yellow_alert}}
                 </p>
               {% endif %}
             {% endfor %}
-            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            <hr class="linea_separated">
             {% for subcategori_id, num_products_expired_products in num_expired_products.items %}
               {% if subcategory.id == subcategori_id %}
                 <p>
@@ -38,7 +35,9 @@
                 </p>
               {% endif %}
             {% endfor %}
-            <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+            <hr class="linea_separated">
+            <a href="{% url 'catalog:products_subcategory' subcategory.id %}" class="btn btn-primary btn-block">Ver Productos </a>
+            <hr class="linea_separated">
           </div>
         </div>
     {% endfor %}

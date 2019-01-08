@@ -8,7 +8,7 @@
   <div class="panel panel-default panel-table">
     <div class="panel-heading">
       <div class="row">
-        <div style="display: flex; justify-content:space-around; align-items: center;" class="col col-xs-12">
+        <div class="col col-xs-12 header_products_subcategory">
           <p>Categoria: <b>{{subcategory.category}}</b></p>
           <select name ="alertas" id="alertas">
                  <option value="">Elige alertas</option>
@@ -22,8 +22,7 @@
         
       </div>
     </div>
-    <div class="panel-body" style="">
-    <!-- <div class="panel-body" style="height: 80vh !important;"> -->
+    <div class="panel-body">
       <table id="table1" class="table table-bordered ">
         <thead>
           <tr>
@@ -48,34 +47,25 @@
             <td>{{ product.lot}}</td>
             <td>{{ product.units}}</td>
             {% if product.alert == "red_alert" %}
-            <td style="color: red">
+            <td class="alerta_roja_text">
               !Alerta roja!
-              <div style="float:right; width: 20px; height: 20px; background: red;border-radius: 50%;"></div>
+              <div class="alerta alerta_circulo_rojo"  ></div>
             </td>
 
             {% elif product.alert == "yellow_alert" %}
-              <td style="color: #FFA100">
+              <td class="alerta_amarillo_text">
                 !Alerta amarilla!
-                <div style="float:right; width: 20px; height: 20px; background: #FFA100;border-radius: 50%;"></div>
+                <div class="alerta alerta_circulo_amarillo"></div>
               </td>
               
             {% else %}
             <td>
               !Producto vencido!
-               <div style="float:right; width: 20px; height: 20px; background: gray;border-radius: 50%;"></div>
+               <div class="alerta alerta_circulo_vencido"></div>
             </td>
             {% endif %}
-            <td align="center">
-              <a href="{% url 'catalog:product_detalle' product.id %}" 
-              style="color: #333 !important; padding: 5px;border-radius: 5%;
-    border: 1px solid #979797;
-    background-color: white;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));
-    background: -webkit-linear-gradient(top, #fff 0%, #dcdcdc 100%);
-    background: -moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);
-    background: -ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);
-    background: -o-linear-gradient(top, #fff 0%, #dcdcdc 100%);
-    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);">
+            <td align="center" class="container_boton">
+              <a class="boton_detalle" href="{% url 'catalog:product_detalle' product.id %}">
                 Detalle
               </a>
               <!-- <a class="btn btn-default"><em class="fa fa-pencil"></em></a> -->
@@ -111,11 +101,4 @@
     }
 } );
 </script>
-
-<style>
-  .panel-footer {
-     padding: 0px 15px !important; 
-}
-</style>
-
 {% endblock %}

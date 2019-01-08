@@ -1,0 +1,25 @@
+.title{
+	display: flex; 
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1%;
+}
+.well_class{
+	padding-top: 0 !important;
+	padding-bottom: 5px !important;
+	width: 110%;
+}
+hr{
+	margin-top: 1px !important; 
+	margin-bottom: 1px !important
+}
+.title_index{
+	margin-top: 4px;
+}
+.alerta_roja_index b{
+	color:red;
+}
+
+.alerta_amarilla_index b{
+	color: #FFA100;
+}

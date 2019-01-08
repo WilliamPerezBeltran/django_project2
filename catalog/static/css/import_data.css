@@ -1,0 +1,90 @@
+.row_import_data{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1%;
+  flex-direction: column;
+}
+.title_import_data{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1%;
+}
+.well_import_data{
+  padding-top: 0 !important;padding-bottom: 5px !important
+}
+
+form .container_form_import_data{
+  display:flex; 
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
+}
+form .container_form_import_data .boton_seleccionar{
+  margin-top: 10%;
+  border: 1px solid gray; 
+  padding: 5px;
+}
+form .container_form_import_data .boton_cargar{
+  margin-top: 10%; 
+  padding:5px; 
+  border-radius: 5%; 
+  cursor: pointer;
+}
+/*loading ciruclar svg Modal*/
+.center_svg{
+  position: relative; 
+  bottom: 10%; 
+  width: 100%; 
+  height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading{
+  color: white; margin-right: 10px;
+}
+/*alerta Modal (error in data excel)*/
+.alerta_error_modal{
+  background:red
+}
+.center_circle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.circle_modal{
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  width: 100px; 
+  height: 100px; 
+  border:2px solid white; 
+  border-radius: 50%;
+}
+.circle_modal li{
+  font-size: 50px; 
+  color: white
+}
+.text_center_modal{
+  text-align: center;
+}
+.boton_salir{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+.boton_salir_color{
+  background: #EDC700; 
+  color: white
+}
+ /*success Modal */
+ .container_exito_boton{
+   display: flex; 
+   justify-content: center;
+   align-items: center;
+ }
+ .modal_exito{
+  background:#00D4A3
+ }

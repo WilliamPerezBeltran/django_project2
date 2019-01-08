@@ -6,18 +6,18 @@
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading">
 			<div class="row">
-				<div style="display: flex; justify-content:space-around; align-items: center;" class="col col-xs-12">
+				<div class="col col-xs-12 header_product_detalle">
 					<p>Categoria: <b> {{product.category}}</b></p>
 					<p>Productos de la subcategoria <b>{{product.sub_category}}</b></p>
 				</div>
 			</div>
 		</div>
-		<div class="panel-body" style="height: 80vh !important; background: white">
-			<div class="row" style=" display: flex;justify-content: center;align-items: center;">
+		<div class="panel-body panel_detalle">
+			<div class="row center_panel">
 				<div class="col-sm-8" >				
 					<div style="" class="panel panel-default  panel--styled">
 						<div class="panel-body">
-							<h4>Detalle del producto</h4>
+							<h2 class="center_title_detalle">Detalle del producto</h2>
 							<div class="col-md-12 panelTop">	
 								<div class="col-md-4">	
 									<img class="img-responsive" src="http://placehold.it/350x350" alt=""/>
@@ -33,11 +33,11 @@
 									<p> 
 										<b>Alerta:</b> 
 										{% if product.alert == "red_alert" %}
-										Alerta roja
+											Alerta roja
 										{% elif product.alert == "yellow_alert" %}
-										Alerta amarilla
+											Alerta amarilla
 										{% else %}
-										Producto vencido
+											Producto vencido
 										{% endif %}
 									</p>
 								</div>
@@ -53,8 +53,8 @@
 		</div>
 		<div class="panel-footer">
 			<div class="row">
-				<div class="col col-xs-4">
-					footer
+				<div class="col col-xs-4 footer" style="">
+					..
 				</div>
 				<div class="col col-xs-8">
 				</div>
@@ -62,32 +62,6 @@
 		</div>
 	</div>
 </div>
-
-<style>
-
-.panel-body h4{
-	margin-left: 8%;
-}
-
-.panel-body {
-	background: #F5F5F5;
-}
-
-.panel.panel--styled {
-	background: #F4F2F3;
-	width: 80%;
-	margin-top: 10%
-}
-.panelTop {
-	padding: 30px;
-}
-
-.panelBottom {
-	border-top: 1px solid #e7e7e7;
-	padding-top: 20px;
-}
-
-</style>
 {% endblock %}
 
 

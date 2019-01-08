@@ -1,19 +1,19 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div class="container">
+  <div class="container">
   <div class="row pricing">
-    <h1 style=" display: flex; justify-content: center;align-items: center;margin-bottom: 1%;">Categorias</h1>
+    <h1 class="title">Categorías</h1>
     {% for category in num_category %}
 
     <div class="col-md-3">
-      <div class="well" style="padding-top: 0 !important;padding-bottom: 5px !important">
-        <h3 style="margin-top: 4px;"><b>{{ category.name }}</b></h3>
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+      <div class="well well_class">
+        <h3 class="title_index"><b>{{ category.name }}</b></h3>
+        <hr>
         <p>
           <b>Total subcategorias:</b>  {{category.subcategory_set.all.count}}
         </p>
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+        <hr>
         {% for category_id, products_by_category in num_products_by_category.items %}
             {% if category_id == category.id %}
               <p>
@@ -22,25 +22,25 @@
             {% endif %}
         {% endfor %}
         
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+        <hr >
         <p>
           {% for category_id, num_total_red_alert in num_products_red_alert.items %}
               {% if category_id == category.id%}
-                 <p>
-                    <b style="color:red">Alertas rojas:</b> {{num_total_red_alert}}
+                 <p class="alerta_roja_index">
+                    <b>Alertas rojas:</b> {{num_total_red_alert}}
                  </p>
               {% endif%}
             {% endfor %}
         </p>
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+        <hr  >
         {% for category_id, total_red_yellow_by_category in num_products_yellow_alert.items %}
           {% if category_id == category.id %}
-           <p>
-             <b style="color: #FFA100">Alertas amarillas:</b> {{total_red_yellow_by_category}}
+           <p class="alerta_amarilla_index">
+             <b>Alertas amarillas:</b> {{total_red_yellow_by_category}}
            </p>
           {% endif%}
         {% endfor %}
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
+        <hr  >
         {% for category_id, total_expired_products_by_category in num_expired_products.items %}
           {% if category_id == category.id %}
            <p>
@@ -48,11 +48,15 @@
            </p>
           {% endif%}
         {% endfor %}
-        <hr style="margin-top: 1px !important; margin-bottom: 1px !important">
-          <a href="{% url 'catalog:subcategories' category.id %}" class="btn btn-primary btn">Ver subcategoria </a>
+        <hr >
+          <a href="{% url 'catalog:subcategories' category.id %}" class="btn btn-primary btn">Ver subcategoría </a>
         </div>
       </div>
       {% endfor %}
     </div>
+  </div>
+  
+
+
 
   {% endblock %}

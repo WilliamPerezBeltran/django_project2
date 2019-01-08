@@ -1,0 +1,23 @@
+.header_product_detalle{
+	display: flex; 
+	justify-content:space-around; 
+	align-items: center;
+}
+.footer{
+	visibility: hidden;
+}
+.panel_detalle{
+	height: 80vh !important; 
+	background: white
+}
+.center_panel{
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+.center_title_detalle{
+	display: flex;
+	justify-content: center;
+	align-items: center; 
+	margin-bottom: 5%;
+}
