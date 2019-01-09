@@ -106,12 +106,12 @@
      //Attach the event handler to any element
      $(document)
      .ajaxStart(function () {
-      console.log('entro a ajaxStart')
+          console.log('entro a ajaxStart')
           //ajax request went so show the loading image
           $loading.modal('show'); 
         })
      .ajaxStop(function () {
-      console.log('entro a ajaxStop ')
+          console.log('entro a ajaxStop ')
          //got response so hide the loading image
           $loading.modal('hide'); 
          // $loading.hide();
